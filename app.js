@@ -30,9 +30,39 @@ app.configure('production', function(){
 
 // Routes
 
-library.init();
+app.get('/', function(req, res){
+    res.send('user ' + req.params.id);
+});
 
-app.get('/', routes.index);
+
+app.get('/artist/:id', function(req, res){
+  
+    res.send('user ' + req.params.id);
+});
+
+app.get('/album/:id', function(req, res){
+    res.send('user ' + req.params.id);
+});
+
+app.get('/next', function(req, res) {
+  library.next();
+  res.send(200);
+});
+
+app.get('/prev', function(req, res) {
+  library.prev();
+  res.send(200);
+});
+
+app.get('/pause', function(req, res) {
+  library.pause();
+  res.send(200);
+});
+
+app.get('/unpause', function(req, res) {
+  library.unpause();
+  res.send(200);
+});
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

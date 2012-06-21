@@ -5,7 +5,7 @@ exports.info = function(msg){
 };
 
 exports.debug = function(msg){
-  util.log(msg);
+  //util.log(msg);
 };
 exports.inspect = function(variable){
   util.log(util.inspect(variable));
