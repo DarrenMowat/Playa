@@ -1,3 +1,5 @@
+// From https://github.com/felixge/node-mysql/
+
 var SqlString = exports;
 
 SqlString.escape = function(val, stringifyObjects) {

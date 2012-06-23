@@ -4,8 +4,7 @@
  */
 
 var express = require('express');
-var library = require('./shared/library');
-var routes = require('./routes');
+var playa = require('./shared/playa');
 
 var app = module.exports = express.createServer();
 
@@ -30,39 +29,17 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', function(req, res){
-    res.send('user ' + req.params.id);
-});
+app.get('/', playa.index);
 
+app.get('/data/queue.json', playa.getQueue);
 
-app.get('/artist/:id', function(req, res){
-  
-    res.send('user ' + req.params.id);
-});
+app.get('/data/nowplaying.json', playa.getNowPlaying);
 
-app.get('/album/:id', function(req, res){
-    res.send('user ' + req.params.id);
-});
+app.get('/artist/:id', playa.artist); 
 
-app.get('/next', function(req, res) {
-  library.next();
-  res.send(200);
-});
+app.get('/album/:id', playa.album); 
 
-app.get('/prev', function(req, res) {
-  library.prev();
-  res.send(200);
-});
-
-app.get('/pause', function(req, res) {
-  library.pause();
-  res.send(200);
-});
-
-app.get('/unpause', function(req, res) {
-  library.unpause();
-  res.send(200);
-});
+app.get('/song/:id', playa.song); 
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

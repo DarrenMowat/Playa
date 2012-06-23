@@ -1,0 +1,6 @@
+h2 #{name}
+
+ul
+  for album in albums
+    li(class='album') 
+      a(href='/album/#{album.id}') #{album.name}

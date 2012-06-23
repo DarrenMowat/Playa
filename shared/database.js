@@ -57,7 +57,7 @@ var addSong = function(song, path, callback) {
       	insert_artist.run(SqlString.escape(song.artist));
   		insert_artist.finalize();
 
-		db.get('SELECT * FROM artists where name = ?', [ SqlString.escape(song.artist) ], function(err, artist) {
+		db.get('SELECT * FROM artists where name like ?', [ SqlString.escape(song.artist) ], function(err, artist) {
 			if(err) throw err;
 			var artist_id = artist.id;
 			db.run('INSERT INTO albums (name, artist_id) VALUES (?, ?);', [ SqlString.escape(song.album), artist_id ]);
@@ -94,11 +94,60 @@ function isEmpty(x) {
 	return (x == undefined || (x + '').replace(/^\s*|\s*$/g, '') === '');
 }
 
+var getArtists = function(callback) {
+	db.serialize(function() {
+		db.all('SELECT * FROM artists ORDER BY name COLLATE NOCASE', callback);
+	});
+}
+
+var getArtist = function(id, callback) {
+	db.serialize(function() {
+		db.get('SELECT * FROM artists where id = ' + id, callback);
+	});
+}
+
+var getAlbums = function(callback) {
+	db.serialize(function() {
+		db.all('SELECT * FROM albums', callback);
+	});
+}
+
+var getAlbumsByArtist = function(id, callback) {
+	db.serialize(function() {
+		db.all('SELECT * FROM albums where artist_id = ' + id, callback);
+	});
+}
+
+var getSongsByAlbum = function(id, callback) {
+	db.serialize(function() {
+		db.all('SELECT * FROM songs where album_id = ?', [ id ], callback);
+	});
+}
+
+var getSongsById = function(id, callback) {
+	db.serialize(function() {
+		db.get('SELECT * FROM songs where id = ' + id , callback);
+	});
+}
+
+var getSongsByArtist = function(id, callback) {
+	db.serialize(function() {
+		db.get('SELECT * FROM songs where artist_id = ?', [ id ], callback);
+	});
+}
+
+
 var close = function() {
   db.close();
-  log.debug('Closed Database');
+  log.info('Closed Database');
 }
 
 exports.addSong = addSong;
 exports.hasSong = hasSong;
+exports.getAlbums = getAlbums;
+exports.getArtists = getArtists;
+exports.getAlbumsByArtist = getAlbumsByArtist;
+exports.getSongsByAlbum = getSongsByAlbum;
+exports.getSongsById = getSongsById;
+exports.getArtist = getArtist;
 exports.close = close;

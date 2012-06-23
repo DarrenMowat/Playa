@@ -1,0 +1,6 @@
+h2 #{name}
+
+ul
+  for song in songs
+    li(class='song') 
+      a(href='/song/#{song.id}') #{song.name}

@@ -12,7 +12,7 @@ var paused = false;
 var play = function(song) {
 	if(song == undefined) return;
 	if(mplayer == undefined) {
-		mplayer = child.spawn('mplayer', ['-slave', '-quiet', song]);
+		mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
 		paused = false;
 		setupEmitters(mplayer);
 	} else {
