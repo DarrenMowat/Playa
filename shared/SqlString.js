@@ -43,7 +43,7 @@ SqlString.escape = function(val, stringifyObjects) {
       default: return "\\"+s;
     }
   });
-  return "'"+val+"'";
+  return val + "";
 };
 
 function zeroPad(number) {

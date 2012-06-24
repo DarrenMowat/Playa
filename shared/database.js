@@ -64,7 +64,11 @@ var addSong = function(song, path, callback) {
 			db.get('SELECT id FROM albums where name = ? and artist_id = ?', [ SqlString.escape(song.album), artist_id], function(err, album) {
 				if(err) throw err;
 				var album_id = album.id;
-				db.run('INSERT INTO songs (name, path, tracknumber, artist_id, album_id) VALUES (?, ?, ?, ?, ?);', [ SqlString.escape(song.title), SqlString.escape(path), 0, artist_id, album_id ]);
+				var tracknumber = 0; 
+				if(song.track != undefined && song.track.no != undefined) {
+					tracknumber = song.track.no;
+				}
+				db.run('INSERT INTO songs (name, path, tracknumber, artist_id, album_id) VALUES (?, ?, ?, ?, ?);', [ SqlString.escape(song.title), SqlString.escape(path), tracknumber, artist_id, album_id ]);
 				return callback(true);
 			});
     	});
@@ -120,7 +124,7 @@ var getAlbumsByArtist = function(id, callback) {
 
 var getSongsByAlbum = function(id, callback) {
 	db.serialize(function() {
-		db.all('SELECT * FROM songs where album_id = ?', [ id ], callback);
+		db.all('SELECT * FROM songs where album_id=? order by tracknumber' , [ id ], callback);
 	});
 }
 

@@ -1,12 +1,14 @@
+var Log = exports;
+
 var util = require('util');
 
-exports.info = function(msg){
+Log.info = function(msg){
   util.log(msg);
 };
 
-exports.debug = function(msg){
+Log.debug = function(msg){
   //util.log(msg);
 };
-exports.inspect = function(variable){
+Log.inspect = function(variable){
   util.log(util.inspect(variable));
 };

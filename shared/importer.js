@@ -1,14 +1,14 @@
+var Importer = exports;
+
 var log = require('./log');
 var fs = require('fs');
 var fsutils = require('./fsutils');
 var musicmetadata = require('musicmetadata');
 
-var path = require('path');
-
 var database = require('./database');
 
 
-var parseSongs = function(songs, ticker, callback) {
+Importer.parseSongs = function(songs, ticker, callback) {
   var i = 0;
   var errors = [];
 	(function next() {
@@ -28,10 +28,11 @@ var parseSongs = function(songs, ticker, callback) {
             });
             parser.on('metadata', function(result) {
             // Insert into database
+            // log.inspect(result);
             database.addSong(result, file, function(added) {
               if(!added) {
                   errors.push(file);
-              }
+              } 
             });
           });
         } else {
@@ -43,16 +44,16 @@ var parseSongs = function(songs, ticker, callback) {
     })();
 }
 
-exports.close = function() {
+Importer.close = function() {
   database.close();
 };
 
-exports.init = function(base_path, setupProgressBar, ticker, callback){
+Importer.init = function(base_path, setupProgressBar, ticker, callback){
   fsutils.getFileList(base_path, function(err, results) {
     if (err) {
         return callback(err);
     }
     setupProgressBar(results.length);
-    parseSongs(results, ticker, callback);
+    Importer.parseSongs(results, ticker, callback);
   });
 };

@@ -1,3 +1,5 @@
+var FSUtils = exports;
+
 var fs = require('fs');
 var log = require('./log');
 
@@ -5,7 +7,7 @@ function getFileExt(filename) {
 	return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
 }
 
-var walk = function(dir, done) {
+FSUtils.getFileList = function(dir, done) {
   var results = [];
   fs.readdir(dir, function(err, list) {
     if (err) return done(err);
@@ -16,13 +18,13 @@ var walk = function(dir, done) {
       file = dir + '/' + file;
       fs.stat(file, function(err, stat) {
         if (stat && stat.isDirectory()) {
-          walk(file, function(err, res) {
+          FSUtils.getFileList(file, function(err, res) {
             results = results.concat(res);
             next();
           });
         } else {
           var ext = getFileExt(file);
-          if(ext == 'mp3' || ext == 'm4a') {
+          if(ext == 'mp3' || ext == 'm4a' || ext == 'ogg') {
 				    results.push(file);
         	}
           next();
@@ -31,5 +33,3 @@ var walk = function(dir, done) {
     })();
   });
 };
-
-exports.getFileList = walk;

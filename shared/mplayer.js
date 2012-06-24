@@ -1,3 +1,5 @@
+var MPlayer = exports;
+
 var child = require('child_process');
 var path = require('path');
 var log = require('./log');
@@ -9,7 +11,7 @@ var mplayer;
 var paused = false;
 
 
-var play = function(song) {
+MPlayer.play = function(song) {
 	if(song == undefined) return;
 	if(mplayer == undefined) {
 		mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
@@ -21,33 +23,36 @@ var play = function(song) {
 	}
 }
 
-var pause = function() {
+MPlayer.pause = function() {
 	if(mplayer != undefined && !paused) {
 		mplayer.stdin.write('pause\n');
 		paused = true;
 	}
 }
 
-var unpause = function() {
+MPlayer.unpause = function() {
 	if(mplayer != undefined && paused) {
 		mplayer.stdin.write('pause\n');
 		paused = false;
 	}
 }
 
-var stop = function() {
+MPlayer.stop = function() {
 	if(mplayer != undefined) {
-		mplayer.kill(0);
+		mplayer.kill();
 		mplayer = undefined;
 	}
 }
 
+MPlayer.getEventEmitter = function(callback){
+  callback(eventEmitter);
+};
 
-var setupEmitters = function(proc) {
+function  setupEmitters(proc) {
 	// Event Emitters
 
 	proc.stdout.on('data', function (data) {
-	  log.debug('MPlayer stdout: ' + data);
+	  log.info('MPlayer stdout: ' + data);
 	});
 
 	proc.stderr.on('data', function (data) {
@@ -55,18 +60,8 @@ var setupEmitters = function(proc) {
 	});
 
 	proc.on('exit', function (code) {
-	  log.debug('child process exited with code ' + code);
+	  log.info('MPlayer process exited with code ' + code);
 	  mplayer = undefined;
 	  eventEmitter.emit('playerExited', 'playerExited');
 	});
 }
-
-exports.getEventEmitter = function(callback){
-  callback(eventEmitter);
-};
-
-
-exports.play = play;
-exports.pause = pause;
-exports.unpause = unpause;
-exports.stop = stop;
