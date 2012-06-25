@@ -1,17 +1,15 @@
-var log = require('./log');
+var Database = exports;
 
+var log = require('./log');
 var fs = require('fs');
 var path = require('path');
-var db_path = path.join(__dirname, '..', 'data', 'library.db');
-
 var SqlString = require('./SqlString');
+var sqlite3 = require('sqlite3').verbose();
 
-// fs.unlinkSync(db_path);
-
+var db_path = path.join(__dirname, '..', 'data', 'library.db');
 var db_initialised = path.existsSync(db_path);
 
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.cached.Database(db_path);
+var db = new sqlite3.Database(db_path);
 
 if(!db_initialised) {
 	log.info('Initialising database');	
@@ -40,7 +38,7 @@ if(!db_initialised) {
 		'FOREIGN KEY(album_id) REFERENCES album(id))');
 }
 
-var addSong = function(song, path, callback) {
+Database.addSong = function(song, path, callback) {
     if(song == undefined) {
     	return callback(false);
     }
@@ -79,7 +77,7 @@ var addSong = function(song, path, callback) {
 
 }
 
-var hasSong = function(path, callback) {
+Database.hasSong = function(path, callback) {
 	if(isEmpty(path)) {
 		log.info('Empty Path');
 		callback(true); // Empty path. Just pretend we have this stored
@@ -98,60 +96,56 @@ function isEmpty(x) {
 	return (x == undefined || (x + '').replace(/^\s*|\s*$/g, '') === '');
 }
 
-var getArtists = function(callback) {
+Database.getArtists = function(callback) {
 	db.serialize(function() {
 		db.all('SELECT * FROM artists ORDER BY name COLLATE NOCASE', callback);
 	});
 }
 
-var getArtist = function(id, callback) {
+Database.getArtist = function(id, callback) {
 	db.serialize(function() {
 		db.get('SELECT * FROM artists where id = ' + id, callback);
 	});
 }
 
-var getAlbums = function(callback) {
+Database.getAlbums = function(callback) {
 	db.serialize(function() {
 		db.all('SELECT * FROM albums', callback);
 	});
 }
 
-var getAlbumsByArtist = function(id, callback) {
+Database.getAlbumsByArtist = function(id, callback) {
 	db.serialize(function() {
 		db.all('SELECT * FROM albums where artist_id = ' + id, callback);
 	});
 }
 
-var getSongsByAlbum = function(id, callback) {
+Database.getSongsByAlbum = function(id, callback) {
 	db.serialize(function() {
 		db.all('SELECT * FROM songs where album_id=? order by tracknumber' , [ id ], callback);
 	});
 }
 
-var getSongsById = function(id, callback) {
+Database.getSongById = function(id, callback) {
 	db.serialize(function() {
 		db.get('SELECT * FROM songs where id = ' + id , callback);
 	});
 }
 
-var getSongsByArtist = function(id, callback) {
+Database.getSongsByArtist = function(id, callback) {
 	db.serialize(function() {
 		db.get('SELECT * FROM songs where artist_id = ?', [ id ], callback);
 	});
 }
 
+Database.getRandomSong = function(callback) {
+	db.serialize(function() {
+		db.get('SELECT * FROM songs ORDER BY RANDOM() LIMIT 1', callback);
+	});
+}
 
-var close = function() {
+
+Database.close = function() {
   db.close();
   log.info('Closed Database');
 }
-
-exports.addSong = addSong;
-exports.hasSong = hasSong;
-exports.getAlbums = getAlbums;
-exports.getArtists = getArtists;
-exports.getAlbumsByArtist = getAlbumsByArtist;
-exports.getSongsByAlbum = getSongsByAlbum;
-exports.getSongsById = getSongsById;
-exports.getArtist = getArtist;
-exports.close = close;
