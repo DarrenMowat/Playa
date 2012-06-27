@@ -12,30 +12,56 @@ var db_initialised = path.existsSync(db_path);
 var db = new sqlite3.Database(db_path);
 
 if(!db_initialised) {
-	log.info('Initialising database');	
-	// Create Artist Table
-	db.run('CREATE TABLE artists (' + 
-		'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
-		'name TEXT COLLATE NOCASE, ' + 
-		'UNIQUE(name) ON CONFLICT IGNORE)');
-	// Create Album Table
-	db.run('CREATE TABLE albums (' + 
-		'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
-		'name TEXT COLLATE NOCASE, ' + 
-		'albumart TEXT, ' + 
-		'artist_id INTEGER, ' + 
-		'UNIQUE(name, artist_id) ON CONFLICT IGNORE, ' +  // Ignore incase album art has already been set.
-		'FOREIGN KEY(artist_id) REFERENCES artist(id))');
-	// Create Song Table
-	db.run('CREATE TABLE songs (' + 
-		'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
-		'name TEXT, ' + 
-		'path TEXT UNIQUE, ' + 
-		'tracknumber INTEGER, ' + 
-		'artist_id INTEGER, ' + 
-		'album_id INTEGER, ' + 
-		'FOREIGN KEY(artist_id) REFERENCES artist(id), ' + 
-		'FOREIGN KEY(album_id) REFERENCES album(id))');
+	db.serialize(function() {
+		log.info('Initialising database');	
+		// Create Artist Table
+		db.run('CREATE TABLE artists (' + 
+			'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
+			'name TEXT COLLATE NOCASE, ' + 
+			'UNIQUE(name) ON CONFLICT IGNORE)');
+		// Create Album Table
+		db.run('CREATE TABLE albums (' + 
+			'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
+			'name TEXT COLLATE NOCASE, ' + 
+			'albumart TEXT, ' + 
+			'artist_id INTEGER, ' + 
+			'UNIQUE(name, artist_id) ON CONFLICT IGNORE, ' +  // Ignore incase album art has already been set.
+			'FOREIGN KEY(artist_id) REFERENCES artist(id))');
+		// A View that combines albums & artists
+		db.run('CREATE VIEW if not exists album_view as select ' + 
+			'albums.id as id, ' + 
+			'albums.name as name, ' + 
+			'albums.album_art as album_art, ' + 
+			'artists.id as artist_id, ' + 
+			'artists.name as artist_name ' + 
+			'from albums, artists ' + 
+			'where albums.artist_id = artists.id');
+		// Create Song Table
+		db.run('CREATE TABLE songs (' + 
+			'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
+			'name TEXT, ' + 
+			'path TEXT UNIQUE, ' + 
+			'tracknumber INTEGER, ' + 
+			'artist_id INTEGER, ' + 
+			'album_id INTEGER, ' + 
+			'FOREIGN KEY(artist_id) REFERENCES artist(id), ' + 
+			'FOREIGN KEY(album_id) REFERENCES album(id))');
+		// Song View
+		// Song(id, name, path, tracknumber), Artist(id, name), Album(id, name, albumart)
+		db.run('CREATE VIEW if not exists song_view as select ' + 
+			'songs.id as id, ' +
+			'songs.name as name, ' +
+			'songs.path as path, ' + 
+			'songs.tracknumber as tracknumber, ' +
+			'album_view.id as album_id, ' + 
+			'album_view.name as album_name, ' + 
+			'album_view.albumart as album_art, ' + 
+			'album_view.artist_id as artist_id, ' + 
+			'album_view.artist_name as artist_name ' + 
+			'from songs, album_view ' + 
+			'where songs.album_id = album_view.id');
+	});
+
 }
 
 Database.addSong = function(song, path, callback) {
@@ -59,7 +85,7 @@ Database.addSong = function(song, path, callback) {
 			if(err) throw err;
 			var artist_id = artist.id;
 			db.run('INSERT INTO albums (name, artist_id) VALUES (?, ?);', [ SqlString.escape(song.album), artist_id ]);
-			db.get('SELECT id FROM albums where name = ? and artist_id = ?', [ SqlString.escape(song.album), artist_id], function(err, album) {
+			db.get('SELECT * FROM albums where name = ? and artist_id = ?', [ SqlString.escape(song.album), artist_id], function(err, album) {
 				if(err) throw err;
 				var album_id = album.id;
 				var tracknumber = 0; 
@@ -67,14 +93,14 @@ Database.addSong = function(song, path, callback) {
 					tracknumber = song.track.no;
 				}
 				db.run('INSERT INTO songs (name, path, tracknumber, artist_id, album_id) VALUES (?, ?, ?, ?, ?);', [ SqlString.escape(song.title), SqlString.escape(path), tracknumber, artist_id, album_id ]);
-				return callback(true);
+				return callback(true, song, artist, album);
 			});
     	});
-
-
-
 	});
+}
 
+Database.updateAlbumArtwork = function(album_id, path, callback) {
+	db.run("UPDATE albums SET albumart = ? WHERE id = ?", path, album_id, callback);
 }
 
 Database.hasSong = function(path, callback) {
@@ -120,27 +146,39 @@ Database.getAlbumsByArtist = function(id, callback) {
 	});
 }
 
+Database.getAlbumById = function(id, callback) {
+	db.serialize(function() {
+		db.get('SELECT * FROM albums where id = ' + id, callback);
+	});
+}
+
 Database.getSongsByAlbum = function(id, callback) {
 	db.serialize(function() {
-		db.all('SELECT * FROM songs where album_id=? order by tracknumber' , [ id ], callback);
+		db.all('SELECT * FROM song_view where album_id=? order by tracknumber' , [ id ], callback);
 	});
 }
 
 Database.getSongById = function(id, callback) {
 	db.serialize(function() {
-		db.get('SELECT * FROM songs where id = ' + id , callback);
+		db.get('SELECT * FROM song_view where id = ' + id , callback);
 	});
 }
 
 Database.getSongsByArtist = function(id, callback) {
 	db.serialize(function() {
-		db.get('SELECT * FROM songs where artist_id = ?', [ id ], callback);
+		db.get('SELECT * FROM song_view where artist_id = ?', [ id ], callback);
 	});
 }
 
 Database.getRandomSong = function(callback) {
 	db.serialize(function() {
-		db.get('SELECT * FROM songs ORDER BY RANDOM() LIMIT 1', callback);
+		db.get('SELECT * FROM song_view ORDER BY RANDOM() LIMIT 1', callback);
+	});
+}
+
+Database.getXRandomAlbums = function(x, callback) {
+	db.serialize(function() {
+		db.all('SELECT * FROM albums ORDER BY RANDOM() LIMIT ' + x, callback);
 	});
 }
 

@@ -16,6 +16,7 @@ var forcefullyStopped = false;
 MPlayer.play = function(song) {
 	if(song == undefined) return;
 	if(mplayer == undefined) {
+		// mplayer = child.spawn('mplayer', ['-slave', song.replace(/(^')|('$)/g, "")]);
 		mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
 		paused = false;
 		forcefullyStopped = false;
@@ -64,7 +65,7 @@ function  setupEmitters(proc) {
 	// Event Emitters
 
 	proc.stdout.on('data', function (data) {
-	  log.debug('MPlayer stdout: ' + data);
+	  log.info('MPlayer stdout: ' + data);
 	});
 
 	proc.stderr.on('data', function (data) {

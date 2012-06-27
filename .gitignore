@@ -2,4 +2,7 @@ data/library.db
 library.db
 node_modules
 .DS_Store
+*.jpg
+*.jpeg
+*.png
 

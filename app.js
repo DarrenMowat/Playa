@@ -21,6 +21,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/data'));
 });
 
 app.configure('development', function(){
@@ -47,11 +48,13 @@ app.post('/upload', playa.ok);
 
 // Queue Control
 
-app.get('/queue/song/:id', playa.addSongToQueue);
+app.post('/queue/song/:id', playa.addSongToQueue);
 
-app.get('/queue/album/:id', playa.addAlbumToQueue);
+app.post('/queue/album/:id', playa.addAlbumToQueue);
 
-app.get('/queue/clear', playa.clearQueue);
+app.post('/queue/remove/:id', playa.removeIdFromQueue)
+
+app.post('/queue/clear', playa.clearQueue);
 
 app.get('/queue.json', playa.getQueue);
 
@@ -59,13 +62,17 @@ app.get('/nowplaying.json', playa.getNowPlaying);
 
 // Player Control Routes
 
-app.get('/player/play', playa.playMusic);
+app.post('/player/play', playa.playMusic);
 
-app.get('/player/pause', playa.pauseMusic);
+app.post('/player/pause', playa.pauseMusic);
 
-app.get('/player/next', playa.nextSong);
+app.post('/player/next', playa.nextSong);
 
-app.get('/player/stop', playa.stop);
+app.post('/player/stop', playa.stop);
+
+app.get('/library*', function(req, res) {
+  res.send(403);
+});
 
 // I don't support previous songs yet
 // app.post('/player/prev', playa.ok);

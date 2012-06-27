@@ -1,12 +1,16 @@
 var Importer = exports;
 
 var log = require('./log');
+var path = require('path');
 var fs = require('fs');
 var fsutils = require('./fsutils');
 var musicmetadata = require('musicmetadata');
 
 var database = require('./database');
 
+
+var art_dir = path.join(__dirname, '..', 'data', 'artwork', '/');
+ 
 
 Importer.parseSongs = function(songs, ticker, callback) {
   var i = 0;
@@ -29,10 +33,27 @@ Importer.parseSongs = function(songs, ticker, callback) {
             parser.on('metadata', function(result) {
             // Insert into database
             // log.inspect(result);
-            database.addSong(result, file, function(added) {
+            database.addSong(result, file, function(added, song, artist, album) {
               if(!added) {
                   errors.push(file);
-              } 
+              } else {
+                // If the album doesn't have artwork stored try and store it
+                if(!album.albumart && result.picture != undefined && result.picture.length > 0) {
+                  var picture = result.picture[0];
+                  var filename = album.id + '.' + picture.format;
+                  var file = path.join(art_dir, filename);
+                  fs.writeFile(file, picture.data, function(err) {
+                    if(err) {
+                      log.info(err + '');
+                    } else {
+                      database.updateAlbumArtwork(album.id, filename, function(err) {
+                        if(err) throw err;
+                      });
+                    }
+                  });
+                }
+                
+              }
             });
           });
         } else {
