@@ -11,6 +11,12 @@ var io = require('socket.io').listen(app);
 var playa = require('./shared/playa');
 playa.setSocketIO(io);
 
+var port = process.argv[2];
+
+if(post == undefined) {
+  port = 3000;
+}
+
 // Configuration
 
 app.configure(function(){
