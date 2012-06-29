@@ -13,7 +13,7 @@ playa.setSocketIO(io);
 
 var port = process.argv[2];
 
-if(post == undefined) {
+if(port == undefined) {
   port = 3000;
 }
 
@@ -83,6 +83,6 @@ app.get('/library*', function(req, res) {
 // I don't support previous songs yet
 // app.post('/player/prev', playa.ok);
 
-app.listen(3000, function(){
-  console.log("Playa server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(port, function(){
+  console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
 });
