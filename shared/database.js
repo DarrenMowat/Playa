@@ -31,7 +31,7 @@ if(!db_initialised) {
 		db.run('CREATE VIEW if not exists album_view as select ' + 
 			'albums.id as id, ' + 
 			'albums.name as name, ' + 
-			'albums.album_art as album_art, ' + 
+			'albums.albumart as albumart, ' + 
 			'artists.id as artist_id, ' + 
 			'artists.name as artist_name ' + 
 			'from albums, artists ' + 
