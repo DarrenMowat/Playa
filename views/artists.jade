@@ -1,0 +1,7 @@
+
+include topbar
+
+ul#artists
+  each artist, name in artists
+    li(class='artist') 
+      a(href='/artist/#{artist.id}') #{artist.name}
