@@ -29,7 +29,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-  app.use(express.static(__dirname + '/data'));
 });
 
 app.configure('development', function(){
@@ -77,10 +76,6 @@ app.post('/player/pause', playa.pauseMusic);
 app.post('/player/next', playa.nextSong);
 
 app.post('/player/stop', playa.stop);
-
-app.get('/library*', function(req, res) {
-  res.send(403);
-});
 
 // I don't support previous songs yet
 // app.post('/player/prev', playa.ok);

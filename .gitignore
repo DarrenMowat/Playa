@@ -1,5 +1,4 @@
-data/library.db
-library.db
+*.db
 node_modules
 .DS_Store
 *.jpg
