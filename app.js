@@ -4,12 +4,10 @@
  */
 
 var express = require('express');
+var playa = require('./shared/playa');
 
 var app = module.exports = express.createServer();
-var io = require('socket.io').listen(app);
-
-var playa = require('./shared/playa');
-playa.setSocketIO(io);
+var io;
 
 var port = process.argv[2];
 
@@ -85,4 +83,7 @@ app.get('/library*', function(req, res) {
 
 app.listen(port, function(){
   console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
+
+  io = require('socket.io').listen(app);
+  playa.setSocketIO(io);
 });
