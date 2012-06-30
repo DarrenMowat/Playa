@@ -123,12 +123,12 @@ Playa.stop = function(req, res){
 // Queue Managing Functions
 
 Playa.getQueue = function(req, res){
-    res.json(queue, {title: 'Queue'});
+    res.json(queue);
 };
 
 
 Playa.queue = function(req, res){
-  res.render('queue');
+  res.render('queue', {title: 'Queue');
 };
 
 Playa.addSongToQueue = function(req, res){
