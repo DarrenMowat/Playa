@@ -7,7 +7,7 @@ var express = require('express');
 
 var io = require('socket.io');
 var http = require('http');
-var app = connect();
+var app = express();
 var server = http.createServer(app);
 
 var playa = require('./shared/playa');
