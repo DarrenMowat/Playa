@@ -128,7 +128,7 @@ Playa.getQueue = function(req, res){
 
 
 Playa.queue = function(req, res){
-  res.render('queue', {title: 'Queue');
+  res.render('queue', {title: 'Queue'});
 };
 
 Playa.addSongToQueue = function(req, res){
