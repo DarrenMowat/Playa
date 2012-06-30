@@ -4,11 +4,11 @@
  */
 
 var express = require('express');
-var http = require('http');
 
+var io = require('socket.io');
+var http = require('http');
 var app = express();
 var server = http.createServer(app);
-var io = require('socket.io').listen(server);
 
 var playa = require('./shared/playa');
 playa.setSocketIO(io);
@@ -18,6 +18,8 @@ var port = process.argv[2];
 if(port == undefined) {
   port = 3000;
 }
+
+
 
 // Configuration
 
@@ -80,6 +82,7 @@ app.post('/player/stop', playa.stop);
 // I don't support previous songs yet
 // app.post('/player/prev', playa.ok);
 
-app.listen(port, function(){
-  console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
-});
+server.listen(port);
+io.listen(server);
+  
+console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
