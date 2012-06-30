@@ -46,10 +46,10 @@ importer.init(directory, setupProgressBar, ticker, function(err) {
 	if(err) {
 		log.info('');
 		log.info('Couldn\'t import all tracks');
-		log.info(err.length + ' Errors');
 		err.forEach(function (val, index, array) {
   			log.info(val);
 		});
+		log.info(err.length + ' Errors');
 		process.exit(1);
 	} else {
 		log.info('');
