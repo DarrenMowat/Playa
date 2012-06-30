@@ -7,7 +7,7 @@ var express = require('express');
 
 var io = require('socket.io');
 var http = require('http');
-var app = express();
+var app = connect();
 var server = http.createServer(app);
 
 var playa = require('./shared/playa');
@@ -82,9 +82,9 @@ app.post('/player/stop', playa.stop);
 // app.post('/player/prev', playa.ok);
 
 server.listen(port);
-io.listen(server);
+var io_server = io.listen(server);
   
-console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
-
 // Pass Playa.js our io instance
-playa.setSocketIO(io);
+playa.setSocketIO(io_server);
+
+console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
