@@ -1,7 +1,9 @@
-
+include inc_head
 include topbar
 
-ul#artists
-  each artist, name in artists
-    li(class='artist') 
-      a(href='/artist/#{artist.id}') #{artist.name}
+body
+  ul#artists
+    each artist, name in artists
+      li(class='artist') 
+        a(href='/artist/#{artist.id}') #{artist.name}
+  include inc_foot

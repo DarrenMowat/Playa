@@ -1,6 +1,10 @@
-h2 #{name}
+include inc_head
+include topbar
 
-ul
-  for album in albums
-    li(class='album') 
-      a(href='/album/#{album.id}') #{album.name}
+body
+  h2 #{name}
+  ul#albums
+    for album in albums
+      li(class='album') 
+        a(href='/album/#{album.id}') #{album.name}
+  include inc_foot

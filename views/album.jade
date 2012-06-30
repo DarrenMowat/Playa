@@ -1,8 +1,11 @@
-h2 #{album.name}
+include inc_head
+include topbar
 
-a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
-
-ul
-  for song in songs
-    li(class='song') 
-      a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
+body
+  h2 #{album.name}
+  a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
+  ul#songs
+    for song in songs
+      li(class='song') 
+        a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
+  include inc_foot
