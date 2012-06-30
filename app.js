@@ -56,6 +56,8 @@ app.post('/upload', playa.ok);
 
 // Queue Control
 
+app.get('/queue', playa.queue);
+
 app.post('/queue/song/:id', playa.addSongToQueue);
 
 app.post('/queue/album/:id', playa.addAlbumToQueue);

@@ -1,7 +1,7 @@
 include inc_head
-include topbar
 
 body
+  include topbar
   h2 #{album.name}
   a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
   ul#songs

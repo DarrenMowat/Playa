@@ -126,6 +126,11 @@ Playa.getQueue = function(req, res){
     res.json(queue);
 };
 
+
+Playa.queue = function(req, res){
+  res.render('queue');
+};
+
 Playa.addSongToQueue = function(req, res){
     var song_id = req.params.id;
     database.getSongById(song_id, function(err, song) {
