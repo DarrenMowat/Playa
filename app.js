@@ -11,7 +11,6 @@ var app = express();
 var server = http.createServer(app);
 
 var playa = require('./shared/playa');
-playa.setSocketIO(io);
 
 var port = process.argv[2];
 
@@ -86,3 +85,6 @@ server.listen(port);
 io.listen(server);
   
 console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
+
+// Pass Playa.js our io instance
+playa.setSocketIO(io);
