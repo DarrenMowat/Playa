@@ -97,13 +97,13 @@ printLogo();
 console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
 
 function printLogo() {
-  log.info(" _____  _                   ");
-  log.info("|  __ \| |                  ");
-  log.info("| |__) | | __ _ _   _  __ _ ");
-  log.info("|  ___/| |/ _` | | | |/ _` |");
-  log.info("| |    | | (_| | |_| | (_| |");
-  log.info("|_|    |_|\__,_|\__, |\__,_|");
-  log.info("                 __/ |      ");
-  log.info("                |___/       ");
-  log.info("                            ");
+  console.log(" _____  _                   ");
+  console.log("|  __ \| |                  ");
+  console.log("| |__) | | __ _ _   _  __ _ ");
+  console.log("|  ___/| |/ _` | | | |/ _` |");
+  console.log("| |    | | (_| | |_| | (_| |");
+  console.log("|_|    |_|\__,_|\__, |\__,_|");
+  console.log("                 __/ |      ");
+  console.log("                |___/       ");
+  console.log("                            ");
 }
