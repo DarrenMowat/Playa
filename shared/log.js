@@ -3,7 +3,7 @@ var Log = exports;
 var util = require('util');
 
 Log.info = function(msg){
-  util.log(msg);
+  util.print(msg);
 };
 
 Log.debug = function(msg){

@@ -86,10 +86,24 @@ app.post('/player/stop', playa.stop);
 
 server.listen(port);
 var io_server = io.listen(server);
-io_server.set('log level', 1); // reduce logging
+io_server.set('log level', 0); // reduce logging
 
   
 // Pass Playa.js our io instance
 playa.setSocketIO(io_server);
 
+printLogo();
+
 console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
+
+function printLogo() {
+  log.info(" _____  _                   ");
+  log.info("|  __ \| |                  ");
+  log.info("| |__) | | __ _ _   _  __ _ ");
+  log.info("|  ___/| |/ _` | | | |/ _` |");
+  log.info("| |    | | (_| | |_| | (_| |");
+  log.info("|_|    |_|\__,_|\__, |\__,_|");
+  log.info("                 __/ |      ");
+  log.info("                |___/       ");
+  log.info("                            ");
+}

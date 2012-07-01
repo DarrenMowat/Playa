@@ -30,13 +30,17 @@ var shouldPlayRandomSong = true;
 
 Playa.index = function(req, res) {
   database.getArtists(function(err, artists) {
-    res.render('artists', { title: 'Artists', artists: artists });
+    res.render('artists', { title: 'Playa', artists: artists });
   });
 }
 
 Playa.artist = function(req, res) {
   var artist_id = req.params.id;
   database.getArtist(artist_id, function(err, artist) {
+    if(artist == undefined) {
+      res.send(404);
+      return;
+    }
     database.getAlbumsByArtist(artist_id, function(err, albums) {
      res.render('artist', {title: artist.name, name: artist.name, albums: albums});
     });
@@ -46,6 +50,10 @@ Playa.artist = function(req, res) {
 Playa.album = function(req, res) {
   var album_id = req.params.id;
     database.getAlbumById(album_id, function(err, album) {
+      if(album == undefined) {
+        res.send(404);
+        return;
+      }
       if(err) throw err;
       database.getArtist(album.artist_id, function(err, artist) {
       if(err) throw err;
