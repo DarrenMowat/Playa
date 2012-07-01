@@ -6,6 +6,7 @@
 var express = require('express');
 
 var io = require('socket.io');
+
 var http = require('http');
 var app = express();
 var server = http.createServer(app);
@@ -85,6 +86,8 @@ app.post('/player/stop', playa.stop);
 
 server.listen(port);
 var io_server = io.listen(server);
+io_server.set('log level', 1); // reduce logging
+
   
 // Pass Playa.js our io instance
 playa.setSocketIO(io_server);
