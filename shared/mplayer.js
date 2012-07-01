@@ -24,6 +24,7 @@ MPlayer.play = function(song) {
 		setupEmitters(mplayer);
 	} else {
 		log.info('Telling current MPlayer process to play ' + song);
+		MPlayer.pause();
 		mplayer.stdin.write('loadfile \'' + song + '\'\n');
 		paused = false;
 	}
