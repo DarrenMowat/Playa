@@ -6,6 +6,10 @@ Log.info = function(msg){
   util.log(msg);
 };
 
+Log.print = function(msg){
+  util.print(msg);
+};
+
 Log.debug = function(msg){
   //util.log(msg);
 };

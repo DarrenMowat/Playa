@@ -16,9 +16,9 @@ var forcefullyStopped = false;
 MPlayer.play = function(song) {
 	if(song == undefined) return;
 	if(mplayer == undefined) {
-		// mplayer = child.spawn('mplayer', ['-slave', song.replace(/(^')|('$)/g, "")]);
+		// mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
 		log.info('Spawning new MPlayer process to play ' + song);
-		mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
+		mplayer = child.spawn('mplayer', ['-slave', song.replace(/(^')|('$)/g, "")]);
 		paused = false;
 		forcefullyStopped = false;
 		setupEmitters(mplayer);
@@ -67,15 +67,15 @@ function  setupEmitters(proc) {
 	// Event Emitters
 
 	proc.stdout.on('data', function (data) {
-	  log.info('MPlayer stdout: ' + data);
+	  log.print('MPlayer: ' + data);
 	});
 
 	proc.stderr.on('data', function (data) {
-	  log.debug('MPlayer stderr: ' + data);
+	  log.print('MPlayer Error: ' + data);
 	});
 
 	proc.on('exit', function (code) {
-	  log.info('MPlayer process exited with code ' + code);
+	  log.print('MPlayer process exited with code ' + code);
 	  mplayer = undefined;
 	  if(!forcefullyStopped) {
 	  	// Only notify listeners if the player exited itself

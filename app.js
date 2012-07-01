@@ -13,13 +13,7 @@ var server = http.createServer(app);
 
 var playa = require('./shared/playa');
 
-var port = process.argv[2];
-
-if(port == undefined) {
-  port = 3000;
-}
-
-
+var port = (process.argv[2] != undefined) ? process.argv[2] : 3000;
 
 // Configuration
 
@@ -31,14 +25,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler());
 });
 
 // Routes
