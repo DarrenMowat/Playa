@@ -4,6 +4,7 @@ var child = require('child_process');
 var path = require('path');
 var log = require('./log');
 
+var S = require('string');
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 
@@ -11,6 +12,8 @@ var mplayer;
 var paused = false;
 
 var forcefullyStopped = false;
+
+var volume = 0;
 
 
 MPlayer.play = function(song) {
@@ -21,15 +24,24 @@ MPlayer.play = function(song) {
 	if(mplayer == undefined) {
 		// mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
 		log.info('Spawning new MPlayer process to play ' + song);
-		mplayer = child.spawn("mplayer", ["-slave", song]);
+		mplayer = child.spawn("mplayer", ["-slave", "-quiet", song]);
 		paused = false;
 		forcefullyStopped = false;
 		setupEmitters(mplayer);
+		if(volume > 0) {
+								log.info('Setting volume to ' + volume);
+
+			mplayer.stdin.write("set_property volume " + volume + "\n");
+		}
 	} else {
 		log.info('Telling current MPlayer process to play ' + song);
 		MPlayer.pause();
 		mplayer.stdin.write("loadfile \"" + song + "\"\n");
 		paused = false;
+		if(volume > 0) {
+					log.info('Setting volume to ' + volume);
+			mplayer.stdin.write("set_property volume " + volume + "\n");
+		}
 	}
 }
 
@@ -71,15 +83,19 @@ MPlayer.getVolume = function() {
 
 MPlayer.incVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("volume 1\n");
+		mplayer.stdin.write("volume 0.5\n");
+		setTimeout(MPlayer.getVolume, 1000);
 	}
 }
 
 MPlayer.decVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("volume -1\n");
+		mplayer.stdin.write("volume -0.5\n");
+		setTimeout(MPlayer.getVolume, 1000);
 	}
 }
+
+// in 1s do get_property volume - store this and use it to spawn new mplayer processes
 
 MPlayer.getEventEmitter = function(callback){
   callback(eventEmitter);
@@ -89,7 +105,12 @@ function  setupEmitters(proc) {
 	// Event Emitters
 
 	proc.stdout.on('data', function (data) {
-	  log.print('MPlayer: ' + data);
+		var sout = S(data.toString()).trim().s;
+		if(S(sout).contains("ANS_volume=")) {
+			volume = S(sout).replaceAll("ANS_volume=", "").s;
+		} else {
+			log.print('MPlayer: ' + data);
+		}
 	});
 
 	proc.stderr.on('data', function (data) {

@@ -10,5 +10,6 @@
     , "progress": "0.0.4"
     , "socket.io": ">=0.9.6"
     , "youtube-dl": "1.2.4"
+    , "string": ">=0.2.1-2"
   }
 } 
