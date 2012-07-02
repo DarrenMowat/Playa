@@ -9,7 +9,7 @@ var sqlite3 = require('sqlite3').verbose();
 var db_path = path.join(__dirname, '..', 'data', 'library.db');
 var db_initialised = path.existsSync(db_path);
 
-var db = new sqlite3.Database(db_path);
+var db = new sqlite3.cached.Database(db_path);
 
 if(!db_initialised) {
 	db.serialize(function() {
@@ -46,7 +46,6 @@ if(!db_initialised) {
 			'album_id INTEGER, ' + 
 			'FOREIGN KEY(artist_id) REFERENCES artist(id), ' + 
 			'FOREIGN KEY(album_id) REFERENCES album(id))');
-		// Song View
 		// Song(id, name, path, tracknumber), Artist(id, name), Album(id, name, albumart)
 		db.run('CREATE VIEW if not exists song_view as select ' + 
 			'songs.id as id, ' +
@@ -60,6 +59,9 @@ if(!db_initialised) {
 			'album_view.artist_name as artist_name ' + 
 			'from songs, album_view ' + 
 			'where songs.album_id = album_view.id');
+		// Try to avoid SQLITE_BUSY errors when importing whilst the app is running
+		db.run('PRAGMA journal_mode = WAL');
+
 	});
 
 }
