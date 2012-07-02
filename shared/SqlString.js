@@ -7,6 +7,10 @@ SqlString.escape = function(val, stringifyObjects) {
     return 'NULL';
   }
 
+  if(1 == 1) {
+    return val;
+  }
+
   switch (typeof val) {
     case 'boolean': return (val) ? 'true' : 'false';
     case 'number': return val+'';
