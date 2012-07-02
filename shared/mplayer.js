@@ -29,19 +29,21 @@ MPlayer.play = function(song) {
 		forcefullyStopped = false;
 		setupEmitters(mplayer);
 		if(volume > 0) {
-								log.info('Setting volume to ' + volume);
-
+			log.info('Setting volume to ' + volume);
 			mplayer.stdin.write("set_property volume " + volume + "\n");
 		}
 	} else {
 		log.info('Telling current MPlayer process to play ' + song);
 		MPlayer.pause();
-		mplayer.stdin.write("loadfile \"" + song + "\"\n");
-		paused = false;
-		if(volume > 0) {
-					log.info('Setting volume to ' + volume);
-			mplayer.stdin.write("set_property volume " + volume + "\n");
-		}
+		// Trying to stop audible pop during song switchover
+		setTimeout(function() {
+			mplayer.stdin.write("loadfile \"" + song + "\"\n");
+			paused = false;
+			if(volume > 0) {
+				log.info('Setting volume to ' + volume);
+				mplayer.stdin.write("set_property volume " + volume + "\n");
+			}
+		}, 100);
 	}
 }
 
