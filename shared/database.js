@@ -36,7 +36,8 @@ if(!db_initialised) {
 			'artists.name as artist_name ' + 
 			'from albums, artists ' + 
 			'where albums.artist_id = artists.id');
-		// Create Song Table
+		// Create Song Table - This should never be accessed outside this module
+		// Always Query against song_view or stuff will break
 		db.run('CREATE TABLE songs (' + 
 			'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
 			'name TEXT, ' + 

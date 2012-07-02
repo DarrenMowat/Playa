@@ -72,7 +72,7 @@ Playa.playMusic = function(req, res){
       return;
     } else if (queue.length != 0) {
       var next = queue.shift();
-      mplayer.play(next.path);
+      mplayer.play(next);
       setNowPlaying(next, false);
       res.send(200);
       return;
@@ -96,7 +96,7 @@ Playa.nextSong = function(req, res){
     if (queue.length != 0) {
       // Kill MPlayer if it is playing
       var next = queue.shift();
-      mplayer.play(next.path);
+      mplayer.play(next);
       setNowPlaying(next, false);
       res.send(200);
       return;
@@ -104,7 +104,7 @@ Playa.nextSong = function(req, res){
         // Find a random song in the database to play
       database.getRandomSong(function(err, song) {
         if(err) throw err;
-        mplayer.play(song.path);
+        mplayer.play(song);
         setNowPlaying(song);
         res.send(200);
         return;
@@ -244,13 +244,13 @@ mplayer.getEventEmitter(function(eventEmitter) {
       if(queue.length != 0) {
         // Play the next song on the queue
         var next = queue.shift();
-        mplayer.play(next.path);
+        mplayer.play(next);
         setNowPlaying(next, false);
       } else if(shouldPlayRandomSong) {
         // Find a random song in the database to play
         database.getRandomSong(function(err, song) {
           if(err) throw err;
-          mplayer.play(song.path);
+          mplayer.play(song);
           setNowPlaying(song, false);
         });
       } else {

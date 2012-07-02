@@ -95,7 +95,7 @@ playa.setSocketIO(io_server);
 
 printLogo();
 
-console.log("Playa server listening on port %d in %s mode", port, app.settings.env);
+console.log("► Playa server listening on port %d in %s mode", port, app.settings.env);
 
 function printLogo() {
   console.log("   _____  _                   ");
