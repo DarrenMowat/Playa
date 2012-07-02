@@ -60,7 +60,7 @@ if(!db_initialised) {
 			'from songs, album_view ' + 
 			'where songs.album_id = album_view.id');
 		// Try to avoid SQLITE_BUSY errors when importing whilst the app is running
-		db.run('PRAGMA journal_mode = WAL');
+		// db.run('PRAGMA journal_mode = WAL'); // Faster but causes some problems 
 
 	});
 
