@@ -65,19 +65,19 @@ MPlayer.isPaused = function() {
 
 MPlayer.getVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("get_property volume");
+		mplayer.stdin.write("get_property volume\n");
 	}
 }
 
 MPlayer.incVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("volume 1");
+		mplayer.stdin.write("volume 1\n");
 	}
 }
 
 MPlayer.decVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("volume -1");
+		mplayer.stdin.write("volume -1\n");
 	}
 }
 
