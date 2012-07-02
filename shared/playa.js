@@ -239,7 +239,6 @@ Playa.getAlbumArtist = function(req, res) {
 
 mplayer.getEventEmitter(function(eventEmitter) {
   eventEmitter.on('playerExited', function(message){
-      log.info('MPlayer Process Exited - Play Next Song');
       nowPlaying = null;
       if(queue.length != 0) {
         // Play the next song on the queue
