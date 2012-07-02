@@ -1,4 +1,7 @@
-*.db
+*.db*
+data/temp/*
+data/uploads/*
+data/artwork/*
 node_modules
 .DS_Store
 *.jpg
