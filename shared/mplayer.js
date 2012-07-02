@@ -19,7 +19,8 @@ var volume = 0;
 MPlayer.play = function(song) {
 	if(song == undefined) return;
 	// Tidy the song up
-	var path = song.path.replace(/(^')|('$)/g, "") + "";
+	var path = song.path.replace(/(^')|('$)/g, "");
+	path = S(path).replaceAll('\'', "'").s;
 	if(mplayer == undefined) {
 		// mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
 		// log.info('Spawning new MPlayer process to play ' + song);
