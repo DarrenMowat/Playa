@@ -7,7 +7,7 @@ var SqlString = require('./SqlString');
 var sqlite3 = require('sqlite3').verbose();
 
 var db_path = path.join(__dirname, '..', 'data', 'library.db');
-var db_initialised = fs.existsSync(db_path);
+var db_initialised = path.existsSync(db_path);
 
 var db = new sqlite3.cached.Database(db_path);
 
