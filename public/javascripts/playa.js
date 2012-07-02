@@ -100,3 +100,18 @@ function playerStop() {
     return false;
 }
 
+function playerGetVolume() {
+    doPost("/player/getVolume");
+    return false;
+}
+
+function playerIncVolume() {
+    doPost("/player/incVolume");
+    return false;
+}
+
+function playerDecVolume() {
+    doPost("/player/decVolume");
+    return false;
+}
+

@@ -5,6 +5,7 @@ var Playa = exports;
 var mplayer = require('./mplayer');
 var database = require('./database');
 var log = require('./log');
+var artwork = require('./artwork');
 
 // The socket.io instance is passed in from app.js
 var io;
@@ -55,12 +56,9 @@ Playa.album = function(req, res) {
         return;
       }
       if(err) throw err;
-      database.getArtist(album.artist_id, function(err, artist) {
-      if(err) throw err;
-        database.getSongsByAlbum(album_id, function(err, songs) {
-          if(err) throw err;
-          res.render('album', {title: album.name, album: album, artist: artist, songs: songs});
-        });
+      database.getSongsByAlbum(album_id, function(err, songs) {
+        if(err) throw err;
+        res.render('album', {title: album.name, album: album, songs: songs});
       });
     });
     
@@ -121,6 +119,38 @@ Playa.stop = function(req, res){
     if(mplayer.isRunning()) {
       mplayer.stop();
       setNowPlaying(undefined, true);
+      res.send(200);
+      return;
+    }
+    // Can't pause music - MPlayer isn't running!
+    res.send(500);
+};
+
+Playa.getVolume = function(req, res) {
+    if(mplayer.isRunning()) {
+      mplayer.getVolume();
+      res.send(200);
+      return;
+    }
+    // Can't pause music - MPlayer isn't running!
+    res.send(500);
+};
+
+
+Playa.incVolume = function(req, res) {
+    if(mplayer.isRunning()) {
+      mplayer.incVolume();
+      res.send(200);
+      return;
+    }
+    // Can't pause music - MPlayer isn't running!
+    res.send(500);
+};
+
+
+Playa.decVolume = function(req, res) {
+    if(mplayer.isRunning()) {
+      mplayer.decVolume();
       res.send(200);
       return;
     }
@@ -195,6 +225,16 @@ Playa.getNowPlaying = function(req, res){
 
 Playa.ok = function(req, res) {
   res.send('OK');
+};
+
+Playa.getArtworkArtist = function(req, res) {
+    var artist_id = req.params.id;
+
+};
+
+Playa.getAlbumArtist = function(req, res) {
+    var album_id = req.params.id;
+
 };
 
 mplayer.getEventEmitter(function(eventEmitter) {

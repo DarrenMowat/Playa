@@ -3,6 +3,8 @@
  * Module dependencies.
  */
 
+var config = require('./config.json');
+
 var express = require('express');
 
 var io = require('socket.io');
@@ -58,6 +60,12 @@ app.get('/queue.json', playa.getQueue);
 
 app.get('/nowplaying.json', playa.getNowPlaying);
 
+// Artwork 
+
+app.get('/artwork/artist/:id', playa.getArtworkArtist);
+
+app.get('/artwork/album/:id', playa.getArtworkAlbum);
+
 // Player Control Routes
 
 app.post('/player/play', playa.playMusic);
@@ -67,6 +75,12 @@ app.post('/player/pause', playa.pauseMusic);
 app.post('/player/next', playa.nextSong);
 
 app.post('/player/stop', playa.stop);
+
+app.post('/player/getVolume', playa.getVolume);
+
+app.post('/player/incVolume', playa.incVolume);
+
+app.post('/player/decVolume', playa.decVolume);
 
 // I don't support previous songs yet
 // app.post('/player/prev', playa.ok);

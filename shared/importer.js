@@ -38,23 +38,25 @@ Importer.parseSongs = function(songs, ticker, callback) {
                   errors.push(file);
               } 
 
-              // else {
-              //   // If the album doesn't have artwork stored try and store it
-              //   if(!album.albumart && result.picture != undefined && result.picture.length > 0) {
-              //     var picture = result.picture[0];
-              //     var filename = album.id + '.' + picture.format;
-              //     var file = path.join(art_dir, filename);
-              //     fs.writeFile(file, picture.data, function(err) {
-              //       if(err) {
-              //         log.info(err + '');
-              //       } else {
-              //         database.updateAlbumArtwork(album.id, filename, function(err) {
-              //           if(err) throw err;
-              //         });
-              //       }
-              //     });
-              //   }
-              // }
+              else {
+                // If the album doesn't have artwork stored try and store it
+                if(!album.albumart && result.picture != undefined && result.picture.length > 0) {
+                  for (var i = result.picture.length - 1; i >= 0; i--) {
+                    var picture = result.picture[i];
+                    var filename = album.id + '-' + i + '.' + picture.format;
+                    var file = path.join(art_dir, filename);
+                    fs.writeFile(file, picture.data, function(err) {
+                      if(err) {
+                        log.info(err + '');
+                      } else {
+                        database.updateAlbumArtwork(album.id, filename, function(err) {
+                          if(err) throw err;
+                        });
+                      }
+                    });
+                  };
+                }
+              }
               
             });
           });
