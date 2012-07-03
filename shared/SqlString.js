@@ -1,6 +1,7 @@
 // From https://github.com/felixge/node-mysql/
 
 var SqlString = exports;
+var log = require('./log');
 
 SqlString.escape = function(str) {
   return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
@@ -26,3 +27,8 @@ SqlString.escape = function(str) {
         }
     });
 };
+
+var flo = "/media/Music/Florence + the Machine/Lungs/13 You've Got the Love.m4a";
+var test = SqlString.escape(flo);
+
+log.print(test);

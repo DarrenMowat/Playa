@@ -66,6 +66,7 @@ app.get('/nowplaying.json', playa.getNowPlaying);
 app.get('/artwork/artist/:id', artwork.getArtworkArtist);
 
 app.get('/artwork/album/:id', artwork.getArtworkAlbum);
+//app.get('/artwork/album/:id', playa.ok);
 
 // Player Control Routes
 
@@ -99,13 +100,14 @@ printLogo();
 console.log("► Playa server listening on port %d in %s mode", port, app.settings.env);
 
 function printLogo() {
-  console.log("   _____  _                   ");
-  console.log("  |  __ \\| |                  ");
-  console.log("  | |__) | | __ _ _   _  __ _ ");
-  console.log("  |  ___/| |/ _` | | | |/ _` |");
-  console.log("  | |    | | (_| | |_| | (_| |");
-  console.log("  |_|    |_|\\__,_|\\__, |\\__,_|");
-  console.log("                   __/ |      ");
-  console.log("                  |___/       ");
-  console.log("                              ");
+  console.log("                               ");
+  console.log("    _____  _                   ");
+  console.log("   |  __ \\| |                  ");
+  console.log("   | |__) | | __ _ _   _  __ _ ");
+  console.log("   |  ___/| |/ _` | | | |/ _` |");
+  console.log("   | |    | | (_| | |_| | (_| |");
+  console.log("   |_|    |_|\\__,_|\\__, |\\__,_|");
+  console.log("                    __/ |      ");
+  console.log("                   |___/       ");
+  console.log("                               ");
 }

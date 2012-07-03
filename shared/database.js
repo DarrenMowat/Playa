@@ -23,7 +23,9 @@ if(!db_initialised) {
 		db.run('CREATE TABLE albums (' + 
 			'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
 			'name TEXT COLLATE NOCASE, ' + 
-			'albumart TEXT, ' + 
+			'albumart_sml TEXT, ' + 
+			'albumart_med TEXT, ' + 
+			'albumart_lrg TEXT, ' + 
 			'artist_id INTEGER, ' + 
 			'UNIQUE(name, artist_id) ON CONFLICT IGNORE, ' +  // Ignore incase album art has already been set.
 			'FOREIGN KEY(artist_id) REFERENCES artist(id))');
@@ -55,7 +57,9 @@ if(!db_initialised) {
 			'songs.tracknumber as tracknumber, ' +
 			'album_view.id as album_id, ' + 
 			'album_view.name as album_name, ' + 
-			'album_view.albumart as album_art, ' + 
+			'album_view.albumart_sml as album_art_sml, ' + 
+			'album_view.albumart_med as album_art_med, ' + 
+			'album_view.albumart_lrg as album_art_lrg, ' + 
 			'album_view.artist_id as artist_id, ' + 
 			'album_view.artist_name as artist_name ' + 
 			'from songs, album_view ' + 
@@ -116,8 +120,20 @@ Database.addSong = function(song, path, callback) {
 	});
 }
 
-Database.updateAlbumArtwork = function(album_id, path, callback) {
+Database.addAlbumArtwork = function(url_sml, url_med, url_lrg, album_id, callback) {
 	db.run("UPDATE albums SET albumart = ? WHERE id = ?", path, album_id, callback);
+	db.run("INSERT INTO albums (name, artist_id) VALUES ($name, $artist_id)", {
+        		$name: song.album.toString(),
+        		$artist_id: artist_id
+    });
+}
+
+Database.setCantGetAlbumArt = function(album_id, callback) {
+
+}
+
+Database.hasAlbumArt = function(album_id, callback) {
+
 }
 
 Database.hasSong = function(path, callback) {
@@ -156,6 +172,8 @@ Database.getAlbums = function(callback) {
 		db.all('SELECT * FROM album_view', callback);
 	});
 }
+
+// TODO: Orderby alphabetically
 
 Database.getAlbumsByArtist = function(id, callback) {
 	db.serialize(function() {

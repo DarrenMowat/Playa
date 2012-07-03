@@ -28,7 +28,7 @@ socket.on('nowPlaying', function (data) {
 	var items = [];
 	items.push('<p>Status: ' + status + '</p>');
 	if(data.song != undefined) {
-		items.push('<p>' + data.song.artist_name + ' - ' + data.song.name + '</p>');
+		items.push('<p>' + data.song.artist_name + ' - ' + data.song.name + '  <a href=\'#\' onclick="return addSongToQueue(\'' + data.song.id + '\')">Requeue</a></p>');
 	}
     $('#nowPlaying').append(items.join(''));
 });
