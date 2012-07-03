@@ -3,7 +3,7 @@ var Database = exports;
 var log = require('./log');
 var fs = require('fs');
 var path = require('path');
-var SqlString = require('./SqlString');
+// var SqlString = require('./SqlString');
 var sqlite3 = require('sqlite3').verbose();
 
 var db_path = path.join(__dirname, '..', 'data', 'library.db');
@@ -80,22 +80,36 @@ Database.addSong = function(song, path, callback) {
 	}
 	db.serialize(function() {
 
-		var insert_artist = db.prepare("INSERT INTO artists (name) VALUES (?);");
-      	insert_artist.run(SqlString.escape(song.artist));
-  		insert_artist.finalize();
+  		db.run("INSERT INTO artists (name) VALUES ($name)", {
+        	$name: song.artist.toString()
+    	});
 
-		db.get('SELECT * FROM artists where name like ?', [ SqlString.escape(song.artist) ], function(err, artist) {
+		db.get('SELECT * FROM artists where name like $name', { 
+			$name: song.artist.toString() 
+			}, function(err, artist) {
 			if(err) throw err;
 			var artist_id = artist.id;
-			db.run('INSERT INTO albums (name, artist_id) VALUES (?, ?);', [ SqlString.escape(song.album), artist_id ]);
-			db.get('SELECT * FROM albums where name = ? and artist_id = ?', [ SqlString.escape(song.album), artist_id], function(err, album) {
+			db.run("INSERT INTO albums (name, artist_id) VALUES ($name, $artist_id)", {
+        		$name: song.album.toString(),
+        		$artist_id: artist_id
+    		});
+			db.get('SELECT * FROM albums where name = $name and artist_id = $artist_id', {
+        			$name: song.album.toString(),
+        			$artist_id: artist_id
+    			}, function(err, album) {
 				if(err) throw err;
 				var album_id = album.id;
 				var tracknumber = 0; 
 				if(song.track != undefined && song.track.no != undefined) {
 					tracknumber = song.track.no;
 				}
-				db.run('INSERT INTO songs (name, path, tracknumber, artist_id, album_id) VALUES (?, ?, ?, ?, ?);', [ SqlString.escape(song.title), SqlString.escape(path), tracknumber, artist_id, album_id ]);
+				db.run('INSERT INTO songs (name, path, tracknumber, artist_id, album_id) VALUES ($name, $path, $tracknumber, $artist_id, $album_id);', {
+					$name: song.title.toString(),
+					$path: path.toString(),
+					$tracknumber: tracknumber,
+					$artist_id: artist_id,
+					$album_id: album_id
+				});
 				return callback(true, song, artist, album);
 			});
     	});
@@ -112,7 +126,7 @@ Database.hasSong = function(path, callback) {
 		callback(true); // Empty path. Just pretend we have this stored
 	}
 	db.serialize(function() {
-		db.get('SELECT * FROM songs where path = ?', [ SqlString.escape(path) ], function(err, rows) {
+		db.get('SELECT * FROM songs where path = $path', { $path: path.toString() }, function(err, rows) {
 			if(err || rows == undefined) {
 				return callback(false);
 			}

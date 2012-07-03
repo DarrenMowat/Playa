@@ -14,6 +14,7 @@ var app = express();
 var server = http.createServer(app);
 
 var playa = require('./shared/playa');
+var artwork = require('./shared/artwork');
 
 var port = (process.argv[2] != undefined) ? process.argv[2] : 3000;
 
@@ -62,9 +63,9 @@ app.get('/nowplaying.json', playa.getNowPlaying);
 
 // Artwork 
 
-app.get('/artwork/artist/:id', playa.getArtworkArtist);
+app.get('/artwork/artist/:id', artwork.getArtworkArtist);
 
-app.get('/artwork/album/:id', playa.getArtworkAlbum);
+app.get('/artwork/album/:id', artwork.getArtworkAlbum);
 
 // Player Control Routes
 

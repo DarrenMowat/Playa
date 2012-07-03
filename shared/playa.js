@@ -43,7 +43,7 @@ Playa.artist = function(req, res) {
       return;
     }
     database.getAlbumsByArtist(artist_id, function(err, albums) {
-     res.render('artist', {title: artist.name, name: artist.name, albums: albums});
+     res.render('artist', {title: artist.name, artist: artist, albums: albums});
     });
   });
 }
@@ -225,16 +225,6 @@ Playa.getNowPlaying = function(req, res){
 
 Playa.ok = function(req, res) {
   res.send('OK');
-};
-
-Playa.getArtworkArtist = function(req, res) {
-    var artist_id = req.params.id;
-
-};
-
-Playa.getAlbumArtist = function(req, res) {
-    var album_id = req.params.id;
-
 };
 
 mplayer.getEventEmitter(function(eventEmitter) {
