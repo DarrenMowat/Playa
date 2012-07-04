@@ -1,7 +1,7 @@
 div(class="fancy-background")
 div(class="navbar navbar-fixed-top")
   div(class="navbar-inner")
-    div(class="container-fluid")
+    div(class="container")
       a(class="btn btn-navbar", data-toggle="collapse", data-target=".nav-collapse")
         span(class="icon-bar")
         span(class="icon-bar")
@@ -9,12 +9,18 @@ div(class="navbar navbar-fixed-top")
       a(class="brand", href="/") Playa►
       div(class="nav-collapse")
         ul(class="nav")
-          li(class="active")
-            a(href="#") Home
-          li()
-            a(href="/queue") Queue
-          li()
-            a(href="/status") Status
+          - if (active == 'home')
+            li(class="active")
+              a(href="#") Home
+          - else
+            li()
+              a(href="/") Home
+          - if (active == 'queue')
+            li(class="active")
+              a(href="#") Queue
+          - else
+            li()
+              a(href="/queue") Queue
         ul(class="nav pull-right", id="player-controls")
           li()
             a(href='#', onclick="return playerPlay()")

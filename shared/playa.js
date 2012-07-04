@@ -33,6 +33,8 @@ Playa.index = function(req, res) {
     var row1 = [];
     var row2 = [];
     var row3 = [];
+    // Slit array into 3 rows
+    // Also deal with users having less than  15 albums
     for (var i = albums.length - 1; i >= 0; i--) {
       if(row1.length != 5) {
         row1.push(albums[i]);
@@ -43,7 +45,7 @@ Playa.index = function(req, res) {
       }
     };
     log.inspect(albums);    
-    res.render('index', { title: 'Playa', row1: row1, row2: row2, row3: row3 });
+    res.render('index', { title: 'Playa', row1: row1, row2: row2, row3: row3 , active: 'home'});
   });
 }
 
@@ -53,7 +55,7 @@ Playa.artists = function(req, res) {
       res.send(404);
       return;
     }
-    res.render('artists', {title:'Artists', artists: artists});
+    res.render('artists', {title:'Artists', artists: artists, active: ''});
   });
 }
 
@@ -65,7 +67,7 @@ Playa.artist = function(req, res) {
       return;
     }
     database.getAlbumsByArtist(artist_id, function(err, albums) {
-     res.render('artist', {title: artist.name, artist: artist, albums: albums});
+     res.render('artist', {title: artist.name, artist: artist, albums: albums, active: ''});
     });
   });
 }
@@ -80,7 +82,7 @@ Playa.album = function(req, res) {
       if(err) throw err;
       database.getSongsByAlbum(album_id, function(err, songs) {
         if(err) throw err;
-        res.render('album', {title: album.name, album: album, songs: songs});
+        res.render('album', {title: album.name, album: album, songs: songs, active: ''});
       });
     });
     
@@ -188,7 +190,7 @@ Playa.getQueue = function(req, res){
 
 
 Playa.queue = function(req, res){
-  res.render('queue', {title: 'Queue'});
+  res.render('queue', {title: 'Queue', active: 'queue'});
 };
 
 Playa.addSongToQueue = function(req, res){
