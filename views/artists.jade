@@ -8,3 +8,5 @@ body
         li(class='artist') 
           a(href='/artist/#{artist.id}') #{artist.name}
 include inc_foot
+script
+  notifyUserOnNewQueuedSongs();

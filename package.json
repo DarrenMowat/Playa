@@ -12,5 +12,6 @@
     , "youtube-dl": "1.2.4"
     , "string": ">=0.2.1-2"
     , "lastfm": "0.8.1"
+    , "express-cachebuster": "0.0.7"
   }
 } 

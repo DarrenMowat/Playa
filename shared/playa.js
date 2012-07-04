@@ -200,6 +200,7 @@ Playa.addSongToQueue = function(req, res){
       song.queue_id = q_id;
       queue.push(song);
       notifyQueueChanged();
+      notifyNewSongQueued(song);
       res.send(200);
     });
 };
@@ -215,6 +216,7 @@ Playa.addAlbumToQueue = function(req, res){
         queue.push(song);
       }
       notifyQueueChanged();
+      notifyNewAlbumQueued(songs);
       res.send(200);
     });
 };
@@ -292,4 +294,13 @@ function notifyNowPlayingChanged() {
 
 function notifyQueueChanged() {
   io.sockets.emit('queue', queue);
+}
+
+function notifyNewSongQueued(song) {
+    io.sockets.emit('songQueued', song);
+}
+
+function notifyNewAlbumQueued(songs) {
+  var album = {song: songs[0], count: songs.length};
+  io.sockets.emit('albumQueued', album);
 }

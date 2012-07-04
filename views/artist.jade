@@ -8,4 +8,6 @@ body
       for album in albums
         li(class='album') 
           a(href='/album/#{album.id}') #{album.name}
-    include inc_foot
+include inc_foot
+script
+  notifyUserOnNewQueuedSongs();

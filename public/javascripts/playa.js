@@ -2,36 +2,64 @@
 
 var socket = io.connect('/');
 
-socket.on('queue', function (data) {
-	console.log(data.length + ' Queued Tracks');
-	console.log(data);
-	$("#queue").empty();
-	var items = [];
-    $.each(data, function(i, item) {
-        items.push('<li>' + item.artist_name + ' - ' + item.name + '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a>' + '</li>');
-    });
-    $('#queue').append(items.join(''));
-});
 
-socket.on('nowPlaying', function (data) {
-	var status;
-	if(data.paused) {
-		status = 'Paused';
-	} else if (data.song == undefined) {
-		status = 'Stopped';
-	} else {
-		status = 'Playing';
-	}
-	console.log('Status: ' + status);
-	// Now update the now playing div
-	$("#nowPlaying").empty();
-	var items = [];
-	items.push('<p>Status: ' + status + '</p>');
-	if(data.song != undefined) {
-		items.push('<p>' + data.song.artist_name + ' - ' + data.song.name + '  <a href=\'#\' onclick="return addSongToQueue(\'' + data.song.id + '\')">Requeue</a></p>');
-	}
-    $('#nowPlaying').append(items.join(''));
-});
+function listenQueueUpdates() {
+    socket.on('queue', function (data) {
+	   $("#queue").empty();
+	   var items = [];
+        $.each(data, function(i, item) {
+            items.push('<li>' + item.artist_name + ' - ' + item.name + '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a>' + '</li>');
+        });
+        $('#queue').append(items.join(''));
+    });
+}
+
+function listenNowPlayingUpdates() {
+    socket.on('nowPlaying', function (data) {
+    	var status;
+    	if(data.paused) {
+    		status = 'Paused';
+    	} else if (data.song == undefined) {
+    		status = 'Stopped';
+    	} else {
+    		status = 'Playing';
+    	}
+    	console.log('Status: ' + status);
+    	// Now update the now playing div
+    	$("#nowPlaying").empty();
+    	var items = [];
+    	items.push('<p>Status: ' + status + '</p>');
+    	if(data.song != undefined) {
+    		items.push('<p>' + data.song.artist_name + ' - ' + data.song.name + '  <a href=\'#\' onclick="return addSongToQueue(\'' + data.song.id + '\')">Requeue</a></p>');
+    	}
+        $('#nowPlaying').append(items.join(''));
+    });
+}
+
+function  notifyUserOnNewQueuedSongs() {
+
+    socket.on('songQueued', function (song) {
+        var image = (!song.album_art_sml) ? '/images/album.png' : song.album_art_sml;
+        $.gritter.add({
+                title: 'Song added to queue',
+                text: song.artist_name + ' - ' + song.name,
+                image: image,
+                sticky: false,
+                time: ''
+            });
+    });
+
+    socket.on('albumQueue', function (album) {
+         var image = (!album.song.album_art_sml) ? '/images/album.png' : album.song.album_art_sml;
+        $.gritter.add({
+                title: 'Album added to queue',
+                text: album.song.artist_name + ' - ' + album.song.album_name + ' - ' + album.count + ' songs',
+                image: image,
+                sticky: false,
+                time: ''
+            });
+    });
+}
 
 function removeItemFromQueue(queue_id) {
 	$.ajax({

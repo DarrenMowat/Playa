@@ -9,4 +9,6 @@ body
       for song in songs
         li(class='song') 
           a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
-    include inc_foot
+include inc_foot
+script
+  notifyUserOnNewQueuedSongs();
