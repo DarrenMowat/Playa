@@ -10,7 +10,6 @@
  */
 
 var log = require('./shared/log');
-var artwork = require('./shared/artwork');
 var db = require('./shared/database');
 var ProgressBar = require('progress');
 
