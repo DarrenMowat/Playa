@@ -5,7 +5,6 @@ var Playa = exports;
 var mplayer = require('./mplayer');
 var database = require('./database');
 var log = require('./log');
-var artwork = require('./artwork');
 
 // The socket.io instance is passed in from app.js
 var io;
