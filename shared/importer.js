@@ -26,7 +26,9 @@ Importer.parseSongs = function(songs, ticker, callback) {
           var stream = fs.createReadStream(file);
             var parser = new musicmetadata(stream);
             parser.on('done', function(err) {
-              errors.push(file);
+              if(err) {
+                errors.push(file);
+              }
               stream.destroy();
               next();
             });
