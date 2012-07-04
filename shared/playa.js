@@ -44,7 +44,6 @@ Playa.index = function(req, res) {
         row3.push(albums[i]);
       }
     };
-    log.inspect(albums);    
     res.render('index', { title: 'Playa', row1: row1, row2: row2, row3: row3 , active: 'home'});
   });
 }

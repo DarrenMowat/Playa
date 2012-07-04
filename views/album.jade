@@ -4,7 +4,6 @@ body
   include topbar
   div(class="container", id="main_content")
     h2 #{album.name} #{album.artist_name}
-    a(href='/artwork/album/#{album.id}') Artwork
     a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
     ul#songs
       for song in songs

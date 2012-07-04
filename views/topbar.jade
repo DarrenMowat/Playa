@@ -21,6 +21,12 @@ div(class="navbar navbar-fixed-top")
           - else
             li()
               a(href="/queue") Queue
+          - if (active == 'upload')
+            li(class="active")
+              a(href="#") Upload
+          - else
+            li()
+              a(href="/upload") Upload
         ul(class="nav pull-right", id="player-controls")
           li()
             a(href='#', onclick="return playerPlay()")
