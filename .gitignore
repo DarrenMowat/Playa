@@ -5,7 +5,4 @@ data/uploads/*
 data/artwork/*
 node_modules
 .DS_Store
-*.jpg
-*.jpeg
-*.png
 
