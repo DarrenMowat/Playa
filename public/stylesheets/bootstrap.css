@@ -66,14 +66,14 @@ sub {
   bottom: -0.25em;
 }
 
-img {
+images {
   max-width: 100%;
   vertical-align: middle;
   border: 0;
   -ms-interpolation-mode: bicubic;
 }
 
-#map_canvas img {
+#map_canvas images {
   max-width: none;
 }
 
@@ -160,8 +160,24 @@ body {
   font-family:  "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   line-height: 18px;
-  color: #333333;
-  background-color: #ffffff;
+  /* color: #333333; background-color: #ffffff; */
+  height: 100%;
+  position: relative;
+  background-color: #080808;
+  color: #9c9c9c;
+}
+
+.fancy-background {
+  position: absolute;
+  width: 100%;
+  height: 400px;
+  padding-top: -60px;
+  background-image: -webkit-linear-gradient(top, #313131 0%, #080808 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #313131), color-stop(1, #080808));
+  background-image: -ms-linear-gradient(top, #313131 0%, #080808 100%);
+  background-image: -moz-linear-gradient(top, #313131 0%, #080808 100%);
+  background-image: -o-linear-gradient(top, #313131 0%, #080808 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#313131', endColorstr='#080808',GradientType=0 ); 
 }
 
 a {
@@ -407,6 +423,8 @@ a:hover {
 .container-fluid {
   padding-right: 20px;
   padding-left: 20px;
+    position: relative;
+
   *zoom: 1;
 }
 
@@ -1778,7 +1796,7 @@ table .span24 {
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("../images/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
@@ -1789,7 +1807,7 @@ table .span24 {
 }
 
 .icon-white {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("../images/glyphicons-halflings-white.png");
 }
 
 .icon-glass {
@@ -4495,7 +4513,7 @@ a.thumbnail:hover {
           box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
 
-.thumbnail > img {
+.thumbnail > images {
   display: block;
   max-width: 100%;
   margin-right: auto;
@@ -4847,7 +4865,7 @@ a.badge:hover {
           transition: 0.6s ease-in-out left;
 }
 
-.carousel .item > img {
+.carousel .item > images {
   display: block;
   line-height: 1;
 }

@@ -30,8 +30,21 @@ var shouldPlayRandomSong = true;
 // Basic Music Player Functions
 
 Playa.index = function(req, res) {
-  database.getArtists(function(err, artists) {
-    res.render('artists', { title: 'Playa', artists: artists });
+  database.getXRandomAlbums(15, function(err, albums) {
+    var row1 = [];
+    var row2 = [];
+    var row3 = [];
+    for (var i = albums.length - 1; i >= 0; i--) {
+      if(row1.length != 5) {
+        row1.push(albums[i]);
+      } else if (row2.length != 5) {
+        row2.push(albums[i]);
+      } else if (row3.length != 5) {
+        row3.push(albums[i]);
+      }
+    };
+    log.inspect(albums);    
+    res.render('index', { title: 'Playa', row1: row1, row2: row2, row3: row3 });
   });
 }
 

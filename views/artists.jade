@@ -2,8 +2,9 @@ include inc_head
 
 body
   include topbar
-  ul#artists
-    each artist, name in artists
-      li(class='artist') 
-        a(href='/artist/#{artist.id}') #{artist.name}
-  include inc_foot
+  div(class="container-fluid", id="main_content")
+    ul#artists
+      each artist, name in artists
+        li(class='artist') 
+          a(href='/artist/#{artist.id}') #{artist.name}
+    include inc_foot

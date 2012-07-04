@@ -37,27 +37,6 @@ Importer.parseSongs = function(songs, ticker, callback) {
               if(!added) {
                   errors.push(file);
               } 
-              // Don't import artwork from files - it's too buggy
-              // else {
-              //   // If the album doesn't have artwork stored try and store it
-              //   if(!album.albumart && result.picture != undefined && result.picture.length > 0) {
-              //     for (var i = result.picture.length - 1; i >= 0; i--) {
-              //       var picture = result.picture[i];
-              //       var filename = album.id + '-' + i + '.' + picture.format;
-              //       var file = path.join(art_dir, filename);
-              //       fs.writeFile(file, picture.data, function(err) {
-              //         if(err) {
-              //           log.info(err + '');
-              //         } else {
-              //           database.updateAlbumArtwork(album.id, filename, function(err) {
-              //             if(err) throw err;
-              //           });
-              //         }
-              //       });
-              //     };
-              //   }
-              // }
-              
             });
           });
         } else {

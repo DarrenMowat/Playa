@@ -2,11 +2,12 @@ include inc_head
 
 body
   include topbar
-  h2 #{album.name} #{album.artist_name}
-  a(href='/artwork/album/#{album.id}') Artwork
-  a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
-  ul#songs
-    for song in songs
-      li(class='song') 
-        a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
-  include inc_foot
+  div(class="container-fluid", id="main_content")
+    h2 #{album.name} #{album.artist_name}
+    a(href='/artwork/album/#{album.id}') Artwork
+    a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
+    ul#songs
+      for song in songs
+        li(class='song') 
+          a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
+    include inc_foot

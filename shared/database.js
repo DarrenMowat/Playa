@@ -33,7 +33,9 @@ if(!db_initialised) {
 		db.run('CREATE VIEW if not exists album_view as select ' + 
 			'albums.id as id, ' + 
 			'albums.name as name, ' + 
-			'albums.albumart as albumart, ' + 
+			'albums.albumart_sml as albumart_sml, ' + 
+			'albums.albumart_med as albumart_med, ' + 
+			'albums.albumart_lrg as albumart_lrg, ' + 
 			'artists.id as artist_id, ' + 
 			'artists.name as artist_name ' + 
 			'from albums, artists ' + 
@@ -121,19 +123,26 @@ Database.addSong = function(song, path, callback) {
 }
 
 Database.addAlbumArtwork = function(url_sml, url_med, url_lrg, album_id, callback) {
-	db.run("UPDATE albums SET albumart = ? WHERE id = ?", path, album_id, callback);
-	db.run("INSERT INTO albums (name, artist_id) VALUES ($name, $artist_id)", {
-        		$name: song.album.toString(),
-        		$artist_id: artist_id
-    });
+	db.run("UPDATE albums SET albumart_sml = $albumart_sml, albumart_med = $albumart_med, albumart_lrg = $albumart_lrg WHERE id = $id", {
+        		$albumart_sml: url_sml,
+        		$albumart_med: url_med,
+        		$albumart_lrg: url_lrg,
+        		$id: album_id
+    }, callback);
 }
 
-Database.setCantGetAlbumArt = function(album_id, callback) {
-
-}
-
-Database.hasAlbumArt = function(album_id, callback) {
-
+Database.hasArtwork = function(album_id, callback) {
+	db.serialize(function() {
+		db.get('SELECT * FROM album_view where id = ' + album_id, function(err, row) {
+			if(err) {
+				log.inspect("Error with album " + album_id);
+				log.inspect(err);
+				log.inspect(row);
+				//throw err;
+			}
+			return callback(row.albumart_sml != undefined && row.albumart_sml != '');
+		});
+	});
 }
 
 Database.hasSong = function(path, callback) {
@@ -213,7 +222,7 @@ Database.getRandomSong = function(callback) {
 
 Database.getXRandomAlbums = function(x, callback) {
 	db.serialize(function() {
-		db.all('SELECT * FROM albums ORDER BY RANDOM() LIMIT ' + x, callback);
+		db.all('SELECT * FROM album_view ORDER BY RANDOM() LIMIT ' + x, callback);
 	});
 }
 

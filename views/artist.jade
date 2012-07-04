@@ -2,10 +2,11 @@ include inc_head
 
 body
   include topbar
-  a(href='/artwork/artist/#{artist.id}') Artwork
-  h2 #{artist.name}
-  ul#albums
-    for album in albums
-      li(class='album') 
-        a(href='/album/#{album.id}') #{album.name}
-  include inc_foot
+  div(class="container-fluid", id="main_content")
+    a(href='/artwork/artist/#{artist.id}') Artwork
+    h2 #{artist.name}
+    ul#albums
+      for album in albums
+        li(class='album') 
+          a(href='/album/#{album.id}') #{album.name}
+    include inc_foot

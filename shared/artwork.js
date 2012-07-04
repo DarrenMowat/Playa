@@ -48,9 +48,11 @@ Artwork.getArtworkAlbum = function(req, res) {
     		return;
     	}
         getAlbumInfo(album.name, album.artist_name, function(err, images){
-                        log.print(err);
-            res.send(404);
-            return;
+            if(err) {
+                log.print(err);
+                res.send(404);
+                return;  
+            }
         });
     	res.send(200);
     });

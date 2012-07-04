@@ -2,10 +2,12 @@ include inc_head
 
 body
   include topbar
-  h2 Now Playing
-  div#nowPlaying
+  div(class="container-fluid", id="main_content")
 
-  h2 Queue
-  div#queue
+    h2 Now Playing
+    div#nowPlaying
+
+    h2 Queue
+    div#queue
   
-  include inc_foot
+include inc_foot

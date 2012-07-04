@@ -65,7 +65,7 @@ app.get('/nowplaying.json', playa.getNowPlaying);
 
 app.get('/artwork/artist/:id', artwork.getArtworkArtist);
 
-app.get('/artwork/album/:id', artwork.getArtworkAlbum);
+app.get('/artwork/album/:id/:size', artwork.getArtworkAlbum);
 //app.get('/artwork/album/:id', playa.ok);
 
 // Player Control Routes
@@ -97,7 +97,7 @@ playa.setSocketIO(io_server);
 
 printLogo();
 
-console.log("► Playa server listening on port %d in %s mode", port, app.settings.env);
+console.log("   Playa► server listening on port %d in %s mode", port, app.settings.env);
 
 function printLogo() {
   console.log("                               ");
