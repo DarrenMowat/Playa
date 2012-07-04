@@ -10,11 +10,19 @@ var db_path = path.join(__dirname, '..', 'data', 'library.db');
 var db_initialised = path.existsSync(db_path);
 
 var db = new sqlite3.cached.Database(db_path);
+// Cache 3000 pages in memory
+// Must be called each time the db is opened
+db.run('PRAGMA cache_size=3000');
 
 if(!db_initialised) {
 	db.serialize(function() {
 		log.info('Initialising database');	
-		// Create Artist Table
+		// Speed the database up a bit
+		// Don't wait for each transaction to hit the disk
+		db.run('PRAGMA synchronous = OFF');
+		// Store temp tables & indices in RAM not disk
+ 		db.run('PRAGMA temp_store = MEMORY');
+ 		// Create Artist Table
 		db.run('CREATE TABLE artists (' + 
 			'id INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
 			'name TEXT COLLATE NOCASE, ' + 
@@ -66,9 +74,6 @@ if(!db_initialised) {
 			'album_view.artist_name as artist_name ' + 
 			'from songs, album_view ' + 
 			'where songs.album_id = album_view.id');
-		// Try to avoid SQLITE_BUSY errors when importing whilst the app is running
-		// db.run('PRAGMA journal_mode = WAL'); // Faster but causes some problems 
-
 	});
 
 }
