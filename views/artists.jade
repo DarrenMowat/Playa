@@ -9,4 +9,5 @@ body
           a(href='/artist/#{artist.id}') #{artist.name}
 include inc_foot
 script
+  listenNowPlayingUpdates(true);
   notifyUserOnNewQueuedSongs();

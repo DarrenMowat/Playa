@@ -12,6 +12,6 @@ body
   
 include inc_foot
 script
-  listenNowPlayingUpdates();
-  listenQueueUpdates();
   notifyUserOnNewQueuedSongs();
+  listenNowPlayingUpdates(false);
+  listenQueueUpdates();

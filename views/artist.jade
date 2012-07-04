@@ -10,4 +10,5 @@ body
           a(href='/album/#{album.id}') #{album.name}
 include inc_foot
 script
+  listenNowPlayingUpdates(true);
   notifyUserOnNewQueuedSongs();

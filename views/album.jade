@@ -11,4 +11,5 @@ body
           a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
 include inc_foot
 script
+  listenNowPlayingUpdates(true);
   notifyUserOnNewQueuedSongs();

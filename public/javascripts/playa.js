@@ -5,16 +5,16 @@ var socket = io.connect('/');
 
 function listenQueueUpdates() {
     socket.on('queue', function (data) {
-	   $("#queue").empty();
 	   var items = [];
         $.each(data, function(i, item) {
             items.push('<li>' + item.artist_name + ' - ' + item.name + '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a>' + '</li>');
         });
+         $("#queue").empty();
         $('#queue').append(items.join(''));
     });
 }
 
-function listenNowPlayingUpdates() {
+function listenNowPlayingUpdates(growl) {
     socket.on('nowPlaying', function (data) {
     	var status;
     	if(data.paused) {
@@ -24,24 +24,25 @@ function listenNowPlayingUpdates() {
     	} else {
     		status = 'Playing';
     	}
-    	console.log('Status: ' + status);
-    	// Now update the now playing div
-    	$("#nowPlaying").empty();
     	var items = [];
     	items.push('<p>Status: ' + status + '</p>');
     	if(data.song != undefined) {
     		items.push('<p>' + data.song.artist_name + ' - ' + data.song.name + '  <a href=\'#\' onclick="return addSongToQueue(\'' + data.song.id + '\')">Requeue</a></p>');
     	}
+        // Now update the now playing div
+        $("#nowPlaying").empty();
         $('#nowPlaying').append(items.join(''));
         //
         var image = (!data.song.album_art_sml) ? '/images/album.png' : data.song.album_art_sml;
-        $.gritter.add({
+        if(growl) {
+            $.gritter.add({
                 title: 'Now Playing',
                 text: data.song.artist_name + ' - ' + data.song.name,
                 image: image,
                 sticky: false,
                 time: ''
             });
+        }
     });
 }
 
@@ -68,6 +69,7 @@ function  notifyUserOnNewQueuedSongs() {
                 time: ''
             });
     });
+
 }
 
 function removeItemFromQueue(queue_id) {
