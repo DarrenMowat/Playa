@@ -49,7 +49,7 @@ function  notifyUserOnNewQueuedSongs() {
             });
     });
 
-    socket.on('albumQueue', function (album) {
+    socket.on('albumQueued', function (album) {
          var image = (!album.song.album_art_sml) ? '/images/album.png' : album.song.album_art_sml;
         $.gritter.add({
                 title: 'Album added to queue',
