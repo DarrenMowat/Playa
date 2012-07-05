@@ -1,6 +1,7 @@
 // Main Client Side Playa file
 
 var socket = io.connect('/');
+var hasReceivedFirstNowPlaying = false;
 
 
 function listenQueueUpdates() {
@@ -14,7 +15,10 @@ function listenQueueUpdates() {
     });
 }
 
-function listenNowPlayingUpdates(growl) {
+//
+// - gritter : Boolean - Should nowPlaying events trigger a gritter notification
+//
+function listenNowPlayingUpdates(gritter) {
     socket.on('nowPlaying', function (data) {
     	var status;
     	if(data.paused) {
@@ -32,17 +36,15 @@ function listenNowPlayingUpdates(growl) {
         // Now update the now playing div
         $("#nowPlaying").empty();
         $('#nowPlaying').append(items.join(''));
-        //
-        var image = (!data.song.album_art_sml) ? '/images/album.png' : data.song.album_art_sml;
-        if(growl) {
-            $.gritter.add({
-                title: 'Now Playing',
-                text: data.song.artist_name + ' - ' + data.song.name,
-                image: image,
-                sticky: false,
-                time: ''
-            });
+        // Gritter Notification
+        // Stop Gritter notification on a page refresh
+        if(hasReceivedFirstNowPlaying && gritter) {
+            var image = (!data.song.album_art_sml) ? '/images/album.png' : data.song.album_art_sml;
+            makeGritter(image, 'Now Playing', data.song.artist_name + ' - ' + data.song.name);
         }
+        // if(!hasReceivedFirstNowPlaying) {
+        hasReceivedFirstNowPlaying = true;
+        // }
     });
 }
 
@@ -50,47 +52,24 @@ function  notifyUserOnNewQueuedSongs() {
 
     socket.on('songQueued', function (song) {
         var image = (!song.album_art_sml) ? '/images/album.png' : song.album_art_sml;
-        $.gritter.add({
-                title: 'Song added to queue',
-                text: song.artist_name + ' - ' + song.name,
-                image: image,
-                sticky: false,
-                time: ''
-            });
+        makeGritter(image, 'Song added to queue', song.artist_name + ' - ' + song.name);
     });
 
     socket.on('albumQueued', function (album) {
          var image = (!album.song.album_art_sml) ? '/images/album.png' : album.song.album_art_sml;
-        $.gritter.add({
-                title: 'Album added to queue',
-                text: album.song.artist_name + ' - ' + album.song.album_name + ' - ' + album.count + ' songs',
-                image: image,
-                sticky: false,
-                time: ''
-            });
+         makeGritter(image, 'Album added to queue', album.song.artist_name + ' - ' + album.song.album_name + ' - ' + album.count + ' songs');
     });
 
 }
 
-function removeItemFromQueue(queue_id) {
-	$.ajax({
-        url: "/queue/remove/" + queue_id,
-        type: "post",
-        // callback handler that will be called on success
-        success: function(response, textStatus, jqXHR){
-            // log a message to the console
-            console.log("Hooray, it worked!");
-        },
-        // callback handler that will be called on error
-        error: function(jqXHR, textStatus, errorThrown){
-            // log the error to the console
-            console.log(
-                "The following error occured: "+
-                textStatus, errorThrown
-            );
-        }
+function makeGritter(image, title, text) {
+    $.gritter.add({
+        title: title,
+        text: text,
+        image: image,
+        sticky: false,
+        time: ''
     });
-    return false;
 }
 
 function doPost(path) {
@@ -111,6 +90,11 @@ function addSongToQueue(song_id) {
 function addAlbumToQueue(album_id) {
 	doPost("/queue/album/" + album_id);
 	return false;
+}
+
+function removeItemFromQueue(queue_id) {
+    doPost("/queue/remove/" + queue_id);
+    return false;
 }
 
 function clearQueue() {
