@@ -2,6 +2,7 @@
 
 var socket = io.connect('/');
 var hasReceivedFirstNowPlaying = false;
+var status = 'Stopped';
 
 
 function listenQueueUpdates() {
@@ -20,7 +21,6 @@ function listenQueueUpdates() {
 //
 function listenNowPlayingUpdates(gritter) {
     socket.on('nowPlaying', function (data) {
-    	var status;
     	if(data.paused) {
     		status = 'Paused';
     	} else if (data.song == undefined) {
@@ -28,6 +28,7 @@ function listenNowPlayingUpdates(gritter) {
     	} else {
     		status = 'Playing';
     	}
+        console.log(status);
     	var items = [];
     	items.push('<p>Status: ' + status + '</p>');
     	if(data.song != undefined) {
@@ -138,3 +139,16 @@ function playerDecVolume() {
     return false;
 }
 
+// Keyboard Player Controls
+
+Mousetrap.bind('ctrl+right', function(e) {
+    playerNext();
+});
+
+Mousetrap.bind('ctrl+up', function(e) {
+    playerIncVolume();
+});
+
+Mousetrap.bind('ctrl+down', function(e) {
+    playerDecVolume();
+});
