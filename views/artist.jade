@@ -3,11 +3,38 @@ include inc_head
 body
   include topbar
   div(class="container", id="main_content")
-    h2 #{artist.name}
-    ul#albums
-      for album in albums
-        li(class='album') 
-          a(href='/album/#{album.id}') #{album.name}
+    div(class="row")
+      div(class="span2")
+        ul(class="nav nav-list")
+          li(class="active")
+            a(href="#") Home
+          li()
+            a(href="/artists") Artists
+          li()
+            a(href="/albums") Albums
+          li()
+            a(href="/recent") Recent
+          li(class="nav-header")
+            li()
+              a(href="/queue") Queue
+            li()
+              a(href="/tvmode") TV
+        h4() Now Playing
+        h4() Queued
+
+      div(class="span10")
+        each row in rows
+          div(class="row")
+            each album in row
+              div(class="span2")
+                a(href="/album/#{album.id}")
+                  - if (!album.albumart_med)
+                    img(src="/images/album.png", alt="#{album.name} - #{album.artist_name} Album  Artwork", width="140", height="140")
+                  - else
+                    img(src="#{album.albumart_med}", alt="#{album.name} - #{album.artist_name} Album   Artwork", width="140", height="140")
+                a(href="/album/#{album.id}") #{album.name}
+
+
 include inc_foot
 script
   listenNowPlayingUpdates(true);

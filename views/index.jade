@@ -23,39 +23,19 @@ body
         h4() Queued
 
       div(class="span10")
-        div(class="row")
-          each a in row1
-            div(class="span2")
-              a(href="/album/#{a.id}")
-                - if (!a.albumart_med)
-                  img(src="/images/album.png", alt="#{a.name} - #{a.artist_name} Album Artwork", width="140", height="140")
-                - else
-                  img(src="#{a.albumart_med}", alt="#{a.name} - #{a.artist_name} Album Artwork", width="140", height="140")
-              a(href="/album/#{a.id}") #{a.name}
-              br()
-              a(href="/artist/#{a.artist_id}") #{a.artist_name}
-        div(class="row")
-          each a in row2
-            div(class="span2")
-              a(href="/album/#{a.id}")
-                - if (!a.albumart_med)
-                  img(src="/images/album.png", alt="#{a.name} - #{a.artist_name} Album Artwork", width="140", height="140")
-                - else
-                  img(src="#{a.albumart_med}", alt="#{a.name} - #{a.artist_name} Album Artwork", width="140", height="140")
-              a(href="/album/#{a.id}") #{a.name}
-              br()
-              a(href="/artist/#{a.artist_id}") #{a.artist_name}
-        div(class="row")
-          each a in row3
-            div(class="span2")
-              a(href="/album/#{a.id}")
-                - if (!a.albumart_med)
-                  img(src="/images/album.png", alt="#{a.name} - #{a.artist_name} Album Artwork", width="140", height="140")
-                - else
-                  img(src="#{a.albumart_med}", alt="#{a.name} - #{a.artist_name} Album Artwork", width="140", height="140")
-              a(href="/album/#{a.id}") #{a.name}
-              br()
-              a(href="/artist/#{a.artist_id}") #{a.artist_name}
+        each row in rows
+          div(class="row")
+            each album in row
+              div(class="span2")
+                a(href="/album/#{album.id}")
+                  - if (!album.albumart_med)
+                    img(src="/images/album.png", alt="#{album.name} - #{album.artist_name} Album  Artwork", width="140", height="140")
+                  - else
+                    img(src="#{album.albumart_med}", alt="#{album.name} - #{album.artist_name} Album   Artwork", width="140", height="140")
+                a(href="/album/#{album.id}") #{album.name}
+                br()
+                a(href="/artist/#{album.artist_id}") #{album.artist_name}
+
        
 include inc_foot
 script

@@ -30,21 +30,19 @@ var shouldPlayRandomSong = true;
 
 Playa.index = function(req, res) {
   database.getXRandomAlbums(15, function(err, albums) {
-    var row1 = [];
-    var row2 = [];
-    var row3 = [];
-    // Slit array into 3 rows
-    // Also deal with users having less than  15 albums
-    for (var i = albums.length - 1; i >= 0; i--) {
-      if(row1.length != 5) {
-        row1.push(albums[i]);
-      } else if (row2.length != 5) {
-        row2.push(albums[i]);
-      } else if (row3.length != 5) {
-        row3.push(albums[i]);
+    var rows = [];
+    // Split array into rows of 5
+    // Also deal with users having less than 15 albums
+    while(albums.length != 0) {
+      var x = 0;
+      var row = [];
+      while(albums.length != 0 && x < 5) {
+        row.push(albums.shift());
+        x++;
       }
-    };
-    res.render('index', { title: 'Playa', row1: row1, row2: row2, row3: row3 , active: 'home'});
+      rows.push(row);
+    }
+    res.render('index', { title: 'Playa', rows: rows, active: 'home'});
   });
 }
 
@@ -60,14 +58,25 @@ Playa.artists = function(req, res) {
 
 Playa.artist = function(req, res) {
   var artist_id = req.params.id;
-  database.getArtist(artist_id, function(err, artist) {
-    if(artist == undefined) {
+  database.getAlbumsByArtist(artist_id, function(err, albums) {
+    if(err || !albums || albums.length == 0) {
       res.send(404);
       return;
     }
-    database.getAlbumsByArtist(artist_id, function(err, albums) {
-     res.render('artist', {title: artist.name, artist: artist, albums: albums, active: ''});
-    });
+    var artist_name = albums[0].artist_name;
+    var rows = [];
+    // Split array into rows of 5
+    // Also deal with users having less than 15 albums
+    while(albums.length != 0) {
+      var x = 0;
+      var row = [];
+      while(albums.length != 0 && x < 5) {
+        row.push(albums.shift());
+        x++;
+      }
+      rows.push(row);
+    }
+    res.render('artist', {title: artist_name, artist_name: artist_name, rows: rows, active: ''});
   });
 }
 
