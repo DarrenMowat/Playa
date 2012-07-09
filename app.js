@@ -1,7 +1,6 @@
 
 var express = require('express');
 var io = require('socket.io');
-var gzippo = require('gzippo');
 var http = require('http');
 var app = express();
 var server = http.createServer(app);

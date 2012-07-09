@@ -3,8 +3,7 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": ">=3.0.0beta5"
-    , "gzippo": ">=0.1.7"
+      "express": ">=3.0.0beta4"
     , "jade": ">= 0.0.1"
     , "musicmetadata": ">=0.1.6"
     , "sqlite3": ">=2.1.3"
