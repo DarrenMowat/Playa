@@ -3,7 +3,6 @@ var Database = exports;
 var log = require('./log');
 var fs = require('fs');
 var path = require('path');
-// var SqlString = require('./SqlString');
 var sqlite3 = require('sqlite3').verbose();
 
 var db_path = path.join(__dirname, '..', 'data', 'library.db');

@@ -3,15 +3,12 @@ include inc_head
 body
   include topbar
   div(class="container", id="main_content")
+    div(class="row")
+      div(class="span2")
+        include sidebar
+      div(class="span10")
+        div#queue
 
-    h2 Now Playing
-    div#nowPlaying
-
-    h2 Queue
-    div#queue
-  
 include inc_foot
 script
-  notifyUserOnNewQueuedSongs();
-  listenNowPlayingUpdates(false);
   listenQueueUpdates();

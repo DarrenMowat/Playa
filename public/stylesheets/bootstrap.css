@@ -170,7 +170,7 @@ body {
 .fancy-background {
   position: absolute;
   width: 100%;
-  height: 400px;
+  height: 600px;
   padding-top: -60px;
   background-image: -webkit-linear-gradient(top, #313131 0%, #080808 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #313131), color-stop(1, #080808));

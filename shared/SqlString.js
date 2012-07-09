@@ -3,7 +3,7 @@
 var SqlString = exports;
 var log = require('./log');
 
-SqlString.escape = function(str) {
+SqlString.e scape = function(str) {
   return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
         switch (char) {
             case "\0":

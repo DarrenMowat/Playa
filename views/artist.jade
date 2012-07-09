@@ -5,23 +5,7 @@ body
   div(class="container", id="main_content")
     div(class="row")
       div(class="span2")
-        ul(class="nav nav-list")
-          li(class="active")
-            a(href="#") Home
-          li()
-            a(href="/artists") Artists
-          li()
-            a(href="/albums") Albums
-          li()
-            a(href="/recent") Recent
-          li(class="nav-header")
-            li()
-              a(href="/queue") Queue
-            li()
-              a(href="/tvmode") TV
-        h4() Now Playing
-        h4() Queued
-
+        include sidebar
       div(class="span10")
         each row in rows
           div(class="row")
@@ -36,6 +20,3 @@ body
 
 
 include inc_foot
-script
-  listenNowPlayingUpdates(true);
-  notifyUserOnNewQueuedSongs();

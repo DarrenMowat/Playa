@@ -3,13 +3,22 @@ include inc_head
 body
   include topbar
   div(class="container", id="main_content")
-    h2 #{album.name} #{album.artist_name}
-    a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
-    ul#songs
-      for song in songs
-        li(class='song') 
-          a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
+    div(class="row")
+      div(class="span2")
+        include sidebar
+      div(class="span2")
+        a(href="/album/#{album.id}")
+        - if (!album.albumart_med)
+          img(src="/images/album.png", alt="#{album.name} - #{album.artist_name} Album  Artwork", width="140", height="140")
+        - else
+          img(src="#{album.albumart_med}", alt="#{album.name} - #{album.artist_name} Album   Artwork", width="140", height="140")
+        p() #{album.artist_name}
+        p() #{album.name}
+        p() #{song_count} Tracks
+        a(href='#', onclick='return addAlbumToQueue(#{album.id})') Add Full Album
+      div(class="span8")
+        ul#songs
+          for song in songs
+            li(class='song') 
+              a(href='#', onclick='return addSongToQueue(#{song.id})') #{song.name}
 include inc_foot
-script
-  listenNowPlayingUpdates(true);
-  notifyUserOnNewQueuedSongs();

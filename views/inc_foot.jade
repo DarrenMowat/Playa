@@ -1,5 +1,15 @@
 script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
-script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js')
 script(src='/javascripts/jquery.gritter.min.js')
 script(src='/javascripts/mousetrap.min.js')
+script(src='/socket.io/socket.io.js')
 script(src='/javascripts/playa.js')
+script
+  Mousetrap.bind('ctrl+right', function(e) {
+    playerNext();
+  });
+  Mousetrap.bind('ctrl+up', function(e) {
+      playerIncVolume();
+  });
+  Mousetrap.bind('ctrl+down', function(e) {
+      playerDecVolume();
+  });

@@ -1,16 +1,10 @@
 
-/**
- * Module dependencies.
- */
-
 var express = require('express');
-
 var io = require('socket.io');
-
+var gzippo = require('gzippo');
 var http = require('http');
 var app = express();
 var server = http.createServer(app);
-
 var playa = require('./shared/playa');
 
 var port = (process.argv[2] != undefined) ? process.argv[2] : 3000;
@@ -76,30 +70,21 @@ app.post('/player/incVolume', playa.incVolume);
 
 app.post('/player/decVolume', playa.decVolume);
 
-// I don't support previous songs yet
-// app.post('/player/prev', playa.ok);
-
+// Lets start the express server & socket.io server
 server.listen(port);
 var io_server = io.listen(server);
 io_server.set('log level', 0); // reduce logging
-
-  
-// Pass Playa.js our io instance
 playa.setSocketIO(io_server);
 
-printLogo();
+console.log("                               ");
+console.log("    _____  _                   ");
+console.log("   |  __ \\| |                  ");
+console.log("   | |__) | | __ _ _   _  __ _ ");
+console.log("   |  ___/| |/ _` | | | |/ _` |");
+console.log("   | |    | | (_| | |_| | (_| |");
+console.log("   |_|    |_|\\__,_|\\__, |\\__,_|");
+console.log("                    __/ |      ");
+console.log("                   |___/       ");
+console.log("                               ");
 
 console.log("   Playa► server listening on port %d in %s mode", port, app.settings.env);
-
-function printLogo() {
-  console.log("                               ");
-  console.log("    _____  _                   ");
-  console.log("   |  __ \\| |                  ");
-  console.log("   | |__) | | __ _ _   _  __ _ ");
-  console.log("   |  ___/| |/ _` | | | |/ _` |");
-  console.log("   | |    | | (_| | |_| | (_| |");
-  console.log("   |_|    |_|\\__,_|\\__, |\\__,_|");
-  console.log("                    __/ |      ");
-  console.log("                   |___/       ");
-  console.log("                               ");
-}

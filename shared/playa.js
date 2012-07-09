@@ -9,20 +9,22 @@ var log = require('./log');
 // The socket.io instance is passed in from app.js
 var io;
 
+var status = 'paused';
+
 Playa.setSocketIO = function(io_) {
   io = io_;
   io.on('connection', function (socket) {
-    // Alert the client of the current queue and now playing
+    // Tell the client whats queued & whats playing
     socket.emit('nowPlaying', nowPlaying);
     socket.emit('queue', queue);
+    socket.emit('status', status);
   });
 }
 
-// Used to give each queued song a unique id
+// Used to give each queued song a unique incremental id
 var q_id = 0;
 var queue = []; 
-var nowPlaying = {song: undefined, playing: false};
-
+var nowPlaying = undefined;
 
 var shouldPlayRandomSong = true;
 
@@ -52,7 +54,7 @@ Playa.artists = function(req, res) {
       res.send(404);
       return;
     }
-    res.render('artists', {title:'Artists', artists: artists, active: ''});
+    res.render('artists', {title:'Artists', artists: artists, active: 'artists'});
   });
 }
 
@@ -76,7 +78,7 @@ Playa.artist = function(req, res) {
       }
       rows.push(row);
     }
-    res.render('artist', {title: artist_name, artist_name: artist_name, rows: rows, active: ''});
+    res.render('artist', {title: artist_name, artist_name: artist_name, rows: rows, active: 'artist'});
   });
 }
 
@@ -90,7 +92,7 @@ Playa.album = function(req, res) {
       if(err) throw err;
       database.getSongsByAlbum(album_id, function(err, songs) {
         if(err) throw err;
-        res.render('album', {title: album.name, album: album, songs: songs, active: ''});
+        res.render('album', {title: album.name, album: album, songs: songs, active: 'album', song_count: songs.length});
       });
     });
     
@@ -99,13 +101,14 @@ Playa.album = function(req, res) {
 Playa.playMusic = function(req, res){
     if(mplayer.isRunning() && mplayer.isPaused()) {
       mplayer.unpause();
-      setNowPlaying(nowPlaying.song, false);
+      setIsPlaying(true);
       res.send(200);
       return;
     } else if (queue.length != 0) {
       var next = queue.shift();
       mplayer.play(next);
-      setNowPlaying(next, false);
+      setNowPlaying(next);
+      setIsPlaying(true);
       res.send(200);
       return;
     }
@@ -116,7 +119,7 @@ Playa.playMusic = function(req, res){
 Playa.pauseMusic = function(req, res){
     if(mplayer.isRunning()) {
       mplayer.pause();
-      setNowPlaying(nowPlaying.song, true);
+      setIsPlaying(false);
       res.send(200);
       return;
     }
@@ -129,7 +132,9 @@ Playa.nextSong = function(req, res){
       // Kill MPlayer if it is playing
       var next = queue.shift();
       mplayer.play(next);
-      setNowPlaying(next, false);
+      setNowPlaying(next);
+      setIsPlaying(true);
+      notifyQueueChanged();
       res.send(200);
       return;
     } else if(shouldPlayRandomSong) {
@@ -138,6 +143,8 @@ Playa.nextSong = function(req, res){
         if(err) throw err;
         mplayer.play(song);
         setNowPlaying(song);
+        setIsPlaying(false);
+        // notifyQueueChanged(); // Queue won't change since it's empty!
         res.send(200);
         return;
       });
@@ -150,7 +157,7 @@ Playa.nextSong = function(req, res){
 Playa.stop = function(req, res){
     if(mplayer.isRunning()) {
       mplayer.stop();
-      setNowPlaying(undefined, true);
+      setNowPlaying(undefined);
       res.send(200);
       return;
     }
@@ -268,37 +275,39 @@ mplayer.getEventEmitter(function(eventEmitter) {
         // Play the next song on the queue
         var next = queue.shift();
         mplayer.play(next);
-        setNowPlaying(next, false);
+        setNowPlaying(next);
+        setIsPlaying(true);
       } else if(shouldPlayRandomSong) {
         // Find a random song in the database to play
         database.getRandomSong(function(err, song) {
           if(err) throw err;
           mplayer.play(song);
-          setNowPlaying(song, false);
+          setNowPlaying(song);
+          setIsPlaying(true);
         });
       } else {
-        setNowPlaying(undefined, false);
+        setNowPlaying(undefined);
+        setIsPlaying(false);
       }
   });
 });
 
-function getSongObject(song, artist, album, queue_id) {
-
-}
-
-function setNowPlaying(song, paused) {
-  if(song == undefined) {
-    nowPlaying = {song: undefined, playing: false};
-  } else {
-    nowPlaying = {song: song, playing: !paused};
-  }
+function setNowPlaying(song) {
+  nowPlaying = song;
   notifyNowPlayingChanged();
 }
 
+function setIsPlaying(playing) {
+  status = playing ? 'playing' : 'paused';
+  io.sockets.emit('status', status);
+}
+
+// The track usually takes a bit of time to load
+// Don't notify connected clients for 0.25 seconds
 function notifyNowPlayingChanged() {
-  io.sockets.emit('nowPlaying', nowPlaying);
-  // Now playing changed so the queue probably changed 
-  notifyQueueChanged();
+  setTimeout(function() {
+    io.sockets.emit('nowPlaying', nowPlaying);
+  }, 250);
 }
 
 function notifyQueueChanged() {

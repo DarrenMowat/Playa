@@ -1,0 +1,28 @@
+ul(class="nav nav-list")
+  - if (active == 'home')
+    li(class="active")
+      a(href="#") Home
+  - else
+    li()
+      a(href="/") Home  
+  - if (active == 'artists')
+    li(class="active")
+      a(href="#") Artists
+  - else
+    li()
+      a(href="/artists") Artists  
+  - if (active == 'albums')
+    li(class="active")
+      a(href="#") Albums
+  - else
+    li()
+      a(href="/albums") Albums  
+  li(class="nav-header")
+  - if (active == 'queue')
+    li(class="active")
+      a(href="#") Queue
+  - else
+    li()
+      a(href="/queue") Queue
+h4() Now Playing
+div#nowPlaying
