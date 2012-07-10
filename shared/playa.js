@@ -71,7 +71,18 @@ Playa.search = function(req, res) {
           return;
         }
         // Now make a page from the search terms
-        res.render('search', { title: 'Playa', artists: artists, albums: albums, songs: songs, active: 'search'});
+        // Split albums into rows are they're laid out in a grid
+        var rows = [];
+        while(albums.length != 0) {
+          var x = 0;
+          var row = [];
+          while(albums.length != 0 && x < 5) {
+            row.push(albums.shift());
+            x++;
+          }
+          rows.push(row);
+        }
+        res.render('search', { title: 'Playa', artists: artists, albums: rows, songs: songs, active: 'search', query: query});
       });
     });
   });

@@ -23,8 +23,7 @@ MPlayer.play = function(song) {
 	path = S(path).replaceAll('\'', "'").s;
 	path = path + "";
 	if(mplayer == undefined) {
-		// mplayer = child.spawn('mplayer', ['-slave', '-quiet', song.replace(/(^')|('$)/g, "")]);
-		// log.info('Spawning new MPlayer process to play ' + song);
+		// Spawn Mplayer with the desired volume
 		if(volume > 0) {
 			mplayer = child.spawn("mplayer", ["-slave", "-quiet", "-volume", volume, path]);
 		} else {
@@ -104,8 +103,6 @@ MPlayer.decVolume = function() {
 		setTimeout(MPlayer.getVolume, 1000);
 	}
 }
-
-// in 1s do get_property volume - store this and use it to spawn new mplayer processes
 
 MPlayer.getEventEmitter = function(callback){
   callback(eventEmitter);
