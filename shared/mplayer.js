@@ -13,7 +13,7 @@ var paused = false;
 
 var forcefullyStopped = false;
 
-var volume = 0;
+var volume = 70;
 
 
 MPlayer.play = function(song) {
@@ -91,14 +91,16 @@ MPlayer.getVolume = function() {
 
 MPlayer.incVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("volume 0.5\n");
+		var newVol = (volume + 3) > 100 ? 100 ? (volume + 3)
+		mplayer.stdin.write("set_property volume " + newVol);
 		setTimeout(MPlayer.getVolume, 1000);
 	}
 }
 
 MPlayer.decVolume = function() {
 	if(mplayer != undefined) {
-		mplayer.stdin.write("volume -0.5\n");
+		var newVol = (volume - 3) > 100 ? 100 ? (volume - 3)
+		mplayer.stdin.write("set_property volume " + newVol);
 		setTimeout(MPlayer.getVolume, 1000);
 	}
 }
@@ -115,7 +117,7 @@ function  setupEmitters(proc) {
 	proc.stdout.on('data', function (data) {
 		var sout = S(data.toString()).trim().s;
 		if(S(sout).contains("ANS_volume=")) {
-			volume = S(sout).replaceAll("ANS_volume=", "").s;
+			volume = Math.floor(S(sout).replaceAll("ANS_volume=", "").s) + 1;
 		} 
 		// else {
 		// 	log.print('MPlayer: ' + data);
