@@ -13,7 +13,7 @@ var paused = false;
 
 var forcefullyStopped = false;
 
-var volume = 70;
+var volume = 80;
 
 
 MPlayer.play = function(song) {
