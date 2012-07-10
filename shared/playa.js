@@ -243,7 +243,15 @@ Playa.addSongToQueue = function(req, res){
       if(err) throw err;
       q_id++;
       song.queue_id = q_id;
-      queue.push(song);
+      var shouldStartPlaying = queue.length == 0 && nowPlaying == undefined;
+      if(shouldStartPlaying) {
+        var next = song;
+        mplayer.play(next);
+        setNowPlaying(next);
+        setIsPlaying(true);
+      } else {
+        queue.push(song);
+      }
       notifyQueueChanged();
       notifyNewSongQueued(song);
       res.send(200);
@@ -254,14 +262,22 @@ Playa.addAlbumToQueue = function(req, res){
     var album_id = req.params.id;
     database.getSongsByAlbum(album_id, function(err, songs) {
       if(err) throw err;
+      var shouldStartPlaying = queue.length == 0 && nowPlaying == undefined;
       for(i = 0; i < songs.length; i++) {
         var song = songs[i];
         q_id++;
         song.queue_id = q_id;
         queue.push(song);
       }
+      if(shouldStartPlaying) {
+        var next = queue.shift();
+        mplayer.play(next);
+        setNowPlaying(next);
+        setIsPlaying(true);
+      } 
       notifyQueueChanged();
       notifyNewAlbumQueued(songs);
+
       res.send(200);
     });
 };
