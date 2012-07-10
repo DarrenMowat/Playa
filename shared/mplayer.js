@@ -32,6 +32,7 @@ MPlayer.play = function(song) {
 		if(volume > 0) {
 			mplayer.stdin.write("set_property volume " + volume + "\n");
 		}
+		eventEmitter.emit('playing', !paused);
 	} else {
 		// log.info('Telling current MPlayer process to play ' + song);
 		MPlayer.pause();
@@ -40,9 +41,11 @@ MPlayer.play = function(song) {
 		setTimeout(function() {
 			mplayer.stdin.write("loadfile \"" + path + "\"\n");
 			paused = false;
+			eventEmitter.emit('paused', paused);
 			if(volume > 0) {
 				mplayer.stdin.write("set_property volume " + volume + "\n");
 			}
+			eventEmitter.emit('playing', !paused);
 		}, 50);
 	}
 	log.info("Playing " + song.name + " by " + song.artist_name);
@@ -52,6 +55,7 @@ MPlayer.pause = function() {
 	if(mplayer != undefined && !paused) {
 		mplayer.stdin.write('pause\n');
 		paused = true;
+		eventEmitter.emit('playing', !paused);
 	}
 }
 
@@ -59,6 +63,7 @@ MPlayer.unpause = function() {
 	if(mplayer != undefined && paused) {
 		mplayer.stdin.write('pause\n');
 		paused = false;
+		eventEmitter.emit('playing', !paused);
 	}
 }
 
@@ -67,6 +72,8 @@ MPlayer.stop = function() {
 		forcefullyStopped = true;
 		mplayer.kill();
 		mplayer = undefined;
+		paused = false;
+		eventEmitter.emit('playing', !paused);
 	}
 }
 

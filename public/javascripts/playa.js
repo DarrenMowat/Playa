@@ -21,6 +21,15 @@ socket.on('nowPlaying', function (song) {
         makeGritter(image, 'Now Playing', song.artist_name + ' - ' + song.name);
     }
     hasReceivedFirstNowPlaying = true;
+    // Now add now playing to the nowPlaying div
+    $("#nowPlaying").empty();
+    var items = [];
+    if(data.song != undefined) {
+        item.push('<p>' + data.song.name + '</p>');
+        item.push('<p>' + data.song.album_name + '</p>');
+        item.push('<p>' + data.song.artist_name + '</p>');
+      }
+    $('#nowPlaying').append(items.join(''));
 });
 
 socket.on('songQueued', function (song) {
@@ -29,8 +38,15 @@ socket.on('songQueued', function (song) {
 });
 
 socket.on('albumQueued', function (album) {
-    var image = (!album.song.album_art_sml) ? '/images/album.png' : album.song.album_art_sml;
-    makeGritter(image, 'Album added to queue', album.song.artist_name + ' - ' + album.song.album_name + ' - ' + album.count + ' songs');
+    if(album.count == 1) {
+        // Album only contains 1 song. 
+        var song = album.song;
+        var image = (!song.album_art_sml) ? '/images/album.png' : song.album_art_sml;
+        makeGritter(image, 'Song added to queue', song.artist_name + ' - ' + song.name);
+    } else {
+        var image = (!album.song.album_art_sml) ? '/images/album.png' : album.song.album_art_sml;
+        makeGritter(image, 'Album added to queue', album.song.artist_name + ' - ' + album.song.album_name + ' - ' + album.count + ' songs');
+    }
 });
 
 function listenQueueUpdates() {
@@ -123,14 +139,14 @@ function playerDecVolume() {
 
 // Keyboard Player Controls
 
-// Mousetrap.bind('ctrl+right', function(e) {
-//     playerNext();
-// });
+Mousetrap.bind('ctrl+right', function(e) {
+    playerNext();
+});
 
-// Mousetrap.bind('ctrl+up', function(e) {
-//     playerIncVolume();
-// });
+Mousetrap.bind('ctrl+up', function(e) {
+    playerIncVolume();
+});
 
-// Mousetrap.bind('ctrl+down', function(e) {
-//     playerDecVolume();
-// });
+Mousetrap.bind('ctrl+down', function(e) {
+    playerDecVolume();
+});
