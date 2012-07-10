@@ -318,6 +318,54 @@ Playa.removeIdFromQueue = function(req, res) {
     }
 };
 
+Playa.moveItemUpQueue = function(req, res) {
+    var queue_id = req.params.id;
+    var stop = false;
+    for (i=0; i < queue.length && !stop; i++) {
+      if(queue[i].queue_id == queue_id) {
+        // Might be able to swap it forward
+        var swapto = i - 1;
+        if(swapto >= 0) {
+          var s1 = queue[i];
+          queue[i] = queue[swapto];
+          queue[swapto] = s1;
+          stop = true;
+        } 
+      }
+    }
+    notifyQueueChanged();
+    if(stop) {
+      res.send(200);
+    } else {
+      res.send(500);
+    }
+};
+
+
+Playa.moveItemDownQueue = function(req, res) {
+    var queue_id = req.params.id;
+    var stop = false;
+    for (i=0; i < queue.length && !stop; i++) {
+      if(queue[i].queue_id == queue_id) {
+        // Might be able to swap it backwards
+        var swapto = i + 1;
+        if(swapto < queue.length) {
+          var s1 = queue[i];
+          queue[i] = queue[swapto];
+          queue[swapto] = s1;
+          stop = true;
+        } 
+      }
+    }
+    notifyQueueChanged();
+    if(stop) {
+      res.send(200);
+    } else {
+      res.send(500);
+    }
+};
+
+
 Playa.clearQueue = function(req, res){
     queue = [];
     notifyQueueChanged();

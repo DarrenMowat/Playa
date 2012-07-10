@@ -57,9 +57,9 @@ function listenQueueUpdates() {
        var items = [];
         $.each(data, function(i, item) {
             var li = 
-            '<li>' + item.artist_name + ' - ' + item.name + 
-            '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a>' +
-            '  <a href=\'#\' onclick="return moveItemUpQueue(\'' + item.queue_id + '\')">Move Up</a>' +
+            '<li>' + item.artist_name + ' - ' + item.name + ' | ' + 
+            '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a> | ' +
+            '  <a href=\'#\' onclick="return moveItemUpQueue(\'' + item.queue_id + '\')">Move Up</a> | ' +
             '  <a href=\'#\' onclick="return moveItemDownQueue(\'' + item.queue_id + '\')">Move Down</a>' +
             '</li>';
             items.push(li);

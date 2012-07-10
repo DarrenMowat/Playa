@@ -52,6 +52,10 @@ app.post('/queue/album/:id', playa.addAlbumToQueue);
 
 app.post('/queue/remove/:id', playa.removeIdFromQueue)
 
+app.post('/queue/moveup/:id', playa.moveItemUpQueue)
+
+app.post('/queue/movedown/:id', playa.moveItemDownQueue)
+
 app.post('/queue/clear', playa.clearQueue);
 
 app.get('/queue.json', playa.getQueue);
