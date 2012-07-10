@@ -38,9 +38,9 @@ app.get('/album/:id', playa.album);
 
 app.get('/status', playa.ok);
 
-app.get('/upload', playa.ok);
+app.get('/upload', playa.uploadGet);
 
-app.post('/upload', playa.ok);
+app.post('/upload', playa.uploadPost);
 
 // Queue Control
 

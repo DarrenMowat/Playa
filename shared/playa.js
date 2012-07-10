@@ -88,6 +88,14 @@ Playa.search = function(req, res) {
   });
 }
 
+Playa.uploadGet = function(req, res) {
+  res.render('artists', {title:'Upload', active: 'upload'});
+}
+
+Playa.uploadPost = function(req, res) {
+  res.send(200);
+}
+
 Playa.artists = function(req, res) {
   database.getArtists(function(err, artists) {
     if(err) {

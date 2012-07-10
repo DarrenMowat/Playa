@@ -56,7 +56,12 @@ function listenQueueUpdates() {
     socket.on('queue', function (data) {
        var items = [];
         $.each(data, function(i, item) {
-            items.push('<li>' + item.artist_name + ' - ' + item.name + '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a>' + '</li>');
+            var li = '<li>' + item.artist_name + ' - ' + item.name + 
+            '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a>'
+            '  <a href=\'#\' onclick="return moveItemUpQueue(\'' + item.queue_id + '\')">Move Up</a>'
+            '  <a href=\'#\' onclick="return moveItemDownQueue(\'' + item.queue_id + '\')">Move Down</a>'
+             + '</li>';
+            items.push(li);
         });
          $("#queue").empty();
         $('#queue').append(items.join(''));
