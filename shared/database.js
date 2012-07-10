@@ -227,6 +227,26 @@ Database.getXRandomAlbums = function(x, callback) {
 	});
 }
 
+// Search
+
+Database.searchArtist = function(term, callback) {
+	db.all('SELECT * FROM artists where name like $name', { 
+		$name: '%' + term.toString() + '%'
+	}, callback);
+}
+
+Database.searchAlbum = function(term, callback) {
+	db.all('SELECT * FROM album_view where name like $name', { 
+		$name: '%' + term.toString() + '%'
+	}, callback);
+}
+
+Database.searchSong = function(term, callback) {
+	db.all('SELECT * FROM song_view where name like $name', { 
+		$name: '%' + term.toString() + '%'
+	}, callback);
+}
+
 
 Database.close = function() {
   db.close();

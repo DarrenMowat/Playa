@@ -48,6 +48,35 @@ Playa.index = function(req, res) {
   });
 }
 
+Playa.search = function(req, res) {
+  var query = req.query["query"];
+  if(query == undefined || query == '') {
+    res.send(404);
+    return;
+  }
+
+  database.searchArtist(query, function(err, artists) {
+    if(err) {
+      res.send(500);
+      return;
+    }
+    database.searchAlbum(query, function(err, albums) {
+      if(err) {
+        res.send(500);
+        return;
+      }
+      database.searchSong(query, function(err, songs) {
+        if(err) {
+          res.send(500);
+          return;
+        }
+        // Now make a page from the search terms
+        res.render('search', { title: 'Playa', artists: artists, albums: albums, songs: songs, active: 'search'});
+      });
+    });
+  });
+}
+
 Playa.artists = function(req, res) {
   database.getArtists(function(err, artists) {
     if(err) {

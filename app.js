@@ -25,6 +25,8 @@ app.configure(function(){
 
 app.get('/', playa.index);
 
+app.get('/search', playa.search);
+
 app.get('/artists', playa.artists); 
 
 app.get('/artist/:id', playa.artist); 
