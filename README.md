@@ -50,10 +50,10 @@ That'll start the server up on [localhost](http://localhost/) or what ever IP Ad
 
 ## Technical Details
 
-Playa is written in Node.js.
-Data is stored in a SQLite3 database.
-Socket.io is used to push queue changes to clients.
-Last.fm is used to get artwork.
+Playa is written in Node.js.  
+Data is stored in a SQLite3 database.  
+Socket.io is used to push queue changes to clients.  
+Last.fm is used to get artwork.  
 
 ## Tests
 
