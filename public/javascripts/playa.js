@@ -98,6 +98,16 @@ function removeItemFromQueue(queue_id) {
     return false;
 }
 
+function moveItemUpQueue(queue_id) {
+    doPost("/queue/moveup/" + queue_id);
+    return false;
+}
+
+function moveItemDownQueue(queue_id) {
+    doPost("/queue/movedown/" + queue_id);
+    return false;
+}
+
 function clearQueue() {
 	doPost("/queue/clear");
     return false;
@@ -140,6 +150,8 @@ function playerDecVolume() {
 }
 
 // Keyboard Player Controls
+
+
 
 Mousetrap.bind('ctrl+right', function(e) {
     playerNext();

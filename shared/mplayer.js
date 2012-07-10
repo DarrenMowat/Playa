@@ -90,7 +90,7 @@ MPlayer.getVolume = function() {
 
 MPlayer.incVolume = function() {
 	if(mplayer != undefined) {
-		var newVol = (volume + 3) > 100 ? 100 : (volume + 3);
+		var newVol = (volume + 5) > 100 ? 100 : (volume + 5);
 		mplayer.stdin.write("set_property volume " + newVol + " 1");
 		setTimeout(MPlayer.getVolume, 1000);
 	}
@@ -98,7 +98,7 @@ MPlayer.incVolume = function() {
 
 MPlayer.decVolume = function() {
 	if(mplayer != undefined) {
-		var newVol = (volume - 3) > 100 ? 100 : (volume - 3);
+		var newVol = (volume - 5) > 100 ? 100 : (volume - 5);
 		mplayer.stdin.write("set_property volume " + newVol + " 1");
 		setTimeout(MPlayer.getVolume, 1000);
 	}
@@ -114,7 +114,8 @@ function  setupEmitters(proc) {
 	proc.stdout.on('data', function (data) {
 		var sout = S(data.toString()).trim().s;
 		if(S(sout).contains("ANS_volume=")) {
-			volume = Math.floor(S(sout).replaceAll("ANS_volume=", "").s) + 1;
+			volume = Math.round(S(sout).replaceAll("ANS_volume=", "").s);
+			volume = volume > 100 : 100 : volume;
 			log.info('Volume: ' + volume);
 		} 
 		// else {
