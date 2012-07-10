@@ -27,9 +27,9 @@ socket.on('nowPlaying', function (song) {
     $("#nowPlaying").empty();
     if(song !== undefined) {
         var items = [];
-        item.push('<p>' + song.name + '</p>');
-        item.push('<p>' + song.album_name + '</p>');
-        item.push('<p>' + song.artist_name + '</p>');
+        items.push('<p>' + song.name + '</p>');
+        items.push('<p>' + song.album_name + '</p>');
+        items.push('<p>' + song.artist_name + '</p>');
         $('#nowPlaying').append(items.join(''));
       }
 });
