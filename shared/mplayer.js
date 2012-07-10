@@ -115,7 +115,7 @@ function  setupEmitters(proc) {
 		var sout = S(data.toString()).trim().s;
 		if(S(sout).contains("ANS_volume=")) {
 			volume = Math.round(S(sout).replaceAll("ANS_volume=", "").s);
-			volume = volume > 100 : 100 : volume;
+			volume = volume > 100 ? 100 : volume;
 			log.info('Volume: ' + volume);
 		} 
 		// else {
