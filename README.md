@@ -6,13 +6,13 @@ Playa is an music player/server with a web interface. It allows your music to be
 
 Playa was inspired by [Play at Github](https://github.com/play/play). I wanted anyone to be able to control my music from any device on my home network and for the music to play through an epic set of speakers I have. [Play](https://github.com/play/play) is powered by iTunes - I'm an Ubuntu guy so I wrote Playa. 
 
-![Playa Index](readme_stuff/playa_index.png)
+![Playa Index](https://dl.dropbox.com/u/7566248/playa_readme/playa_index.png)
 
 Playa manages your music library in its own database so it isn't dependant on any other media player. Music is queued up by the users or played randomly by Playa if the queue is empty. I aim to try and make shuffle mode less random in the future by taking into account things like play count.
 
 Playa is pretty lightweight. I run it on a [RaspberryPi](raspberrypi.org) connected to my speakers and its quick. If you don't have a one yet you should get one :P. 
 
-![Playa Raspberry Pi](readme_stuff/playa_rasppi.png)
+![Playa Raspberry Pi](https://dl.dropbox.com/u/7566248/playa_readme/playa_rasppi.jpg)
 
 
 ## Setup
