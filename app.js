@@ -16,9 +16,12 @@ app.configure(function(){
   app.set('view options', { layout: false });
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.logger('dev'));
+  app.use(express.favicon());
   app.use(app.router);
+  app.use(express.compress());
+  app.use(express.staticCache());
   app.use(express.static(__dirname + '/public'));
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 // Routes

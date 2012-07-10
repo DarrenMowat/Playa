@@ -7,8 +7,14 @@ body
       div(class="span2")
         include sidebar
       div(class="span10")
-        div(class="btn-group", id="playerControls")
-        div#queue
+        div#artists
+          each artist, name in artists
+            li(class='artist') 
+              a(href='/artist/#{artist.id}') #{artist.name}
+        div#albums
+
+        div#songs
+
 
 include inc_foot
 script
