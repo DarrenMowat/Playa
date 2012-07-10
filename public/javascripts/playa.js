@@ -10,6 +10,8 @@ var notifyNowPlaying = false;
 socket.on('status', function (stat) {
     status = stat;
     console.log(status);
+    // Toggle pause / play button
+
 });
 
 socket.on('nowPlaying', function (song) {
@@ -23,13 +25,13 @@ socket.on('nowPlaying', function (song) {
     hasReceivedFirstNowPlaying = true;
     // Now add now playing to the nowPlaying div
     $("#nowPlaying").empty();
-    var items = [];
-    if(data.song != undefined) {
-        item.push('<p>' + data.song.name + '</p>');
-        item.push('<p>' + data.song.album_name + '</p>');
-        item.push('<p>' + data.song.artist_name + '</p>');
+    if(song !== undefined) {
+        var items = [];
+        item.push('<p>' + song.name + '</p>');
+        item.push('<p>' + song.album_name + '</p>');
+        item.push('<p>' + song.artist_name + '</p>');
+        $('#nowPlaying').append(items.join(''));
       }
-    $('#nowPlaying').append(items.join(''));
 });
 
 socket.on('songQueued', function (song) {
