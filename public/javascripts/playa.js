@@ -61,15 +61,21 @@ function listenQueueUpdates() {
     // Not all pages want to listen for Queue updates
     socket.on('queue', function (data) {
        var items = [];
-        $.each(data, function(i, item) {
-            var li = 
-            '<li>' + item.artist_name + ' - ' + item.name + ' | ' + 
-            '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a> | ' +
-            '  <a href=\'#\' onclick="return moveItemUpQueue(\'' + item.queue_id + '\')">Move Up</a> | ' +
-            '  <a href=\'#\' onclick="return moveItemDownQueue(\'' + item.queue_id + '\')">Move Down</a>' +
-            '</li>';
-            items.push(li);
-        });
+       if(data.length != 0) {
+            $.each(data, function(i, item) {
+                var li = 
+                '<li>' + item.artist_name + ' - ' + item.name + ' | ' + 
+                '  <a href=\'#\' onclick="return removeItemFromQueue(\'' + item.queue_id + '\')">Remove</a> | ' +
+                '  <a href=\'#\' onclick="return moveItemUpQueue(\'' + item.queue_id + '\')">Move Up</a> | ' +
+                '  <a href=\'#\' onclick="return moveItemDownQueue(\'' + item.queue_id + '\')">Move Down</a>' +
+                '</li>';
+                items.push(li);
+            });
+        } else {
+            // The queue is currently empty
+            items.push('<h2>The queue is empty :(</h2>');
+        }
+    
          $("#queue").empty();
         $('#queue').append(items.join(''));
     });

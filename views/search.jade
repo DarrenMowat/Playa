@@ -7,29 +7,35 @@ body
       div(class="span2")
         include sidebar
       div(class="span10")
-        h2 Searching for #{query}
-        h3 Artists
-        ul#artists
-          for artist in artists
-            li(class='artist') 
-              a(href='/artist/#{artist.id}') #{artist.name}
-        h3 Albums
-        div#albums
-          each row in albums
-            div(class="row")
-              each album in row
-                div(class="span2")
-                  a(href="/album/#{album.id}")
-                    - if (!album.albumart_med)
-                      img(src="/images/album.png", alt="#{album.name} - #{album.artist_name} Album  Artwork",   width="140", height="140")
-                    - else
-                     img(src="#{album.albumart_med}", alt="#{album.name} - #{album.artist_name} Album     Artwork", width="140", height="140")
-                  a(href="/album/#{album.id}") #{album.name}
-        h3 Songs
-        ul#songs
-          for song in songs
-            li(class='song') 
-              a(href='/album/#{song.album_id}') #{song.name} #{song.album_name} #{song.artist_name} 
+        - if (none)
+          h2 No results for #{query} :(
+        - else 
+          h2 Search for #{query}
+          - if (!no_artists)
+            h3 Artists
+            ul#artists
+              for artist in artists
+                li(class='artist') 
+                  a(href='/artist/#{artist.id}') #{artist.name}
+          - if (!no_albums)
+            h3 Albums
+            div#albums
+              each row in albums
+                div(class="row")
+                  each album in row
+                    div(class="span2")
+                      a(href="/album/#{album.id}")
+                        - if (!album.albumart_med)
+                          img(src="/images/album.png", alt="#{album.name} - #{album.artist_name} Album      Artwork",   width="140", height="140")
+                        - else
+                          img(src="#{album.albumart_med}", alt="#{album.name} - #{album.artist_name}   Album       Artwork", width="140", height="140")
+                      a(href="/album/#{album.id}") #{album.name}
+          - if (!no_songs)
+            h3 Songs
+            ul#songs
+              for song in songs
+                li(class='song') 
+                  a(href='/album/#{song.album_id}') #{song.name} #{song.album_name} #{song.artist_name} 
 
 include inc_foot
 script

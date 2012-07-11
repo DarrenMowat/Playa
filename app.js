@@ -34,6 +34,8 @@ app.get('/artists', playa.artists);
 
 app.get('/artist/:id', playa.artist); 
 
+app.get('/albums', playa.albums); 
+
 app.get('/album/:id', playa.album); 
 
 app.get('/status', playa.ok);

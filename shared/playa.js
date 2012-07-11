@@ -70,6 +70,7 @@ Playa.search = function(req, res) {
           res.send(500);
           return;
         }
+        var none = artists.length == 0 && albums.length == 0 && songs.length == 0;
         // Now make a page from the search terms
         // Split albums into rows are they're laid out in a grid
         var rows = [];
@@ -82,7 +83,17 @@ Playa.search = function(req, res) {
           }
           rows.push(row);
         }
-        res.render('search', { title: 'Playa', artists: artists, albums: rows, songs: songs, active: 'search', query: query});
+        res.render('search', { 
+          title: 'Playa', 
+          none: none, 
+          no_artists: (artists.length == 0),
+          artists: artists, 
+          no_albums: (rows.length == 0),
+          albums: rows, 
+          no_songs: (songs.length == 0),
+          songs: songs, 
+          active: 'search', 
+          query: query});
       });
     });
   });
@@ -97,6 +108,7 @@ Playa.uploadPost = function(req, res) {
 }
 
 Playa.artists = function(req, res) {
+  log.info('GET /artists has a horrible UI. Filterable table?');
   database.getArtists(function(err, artists) {
     if(err) {
       res.send(404);
@@ -127,6 +139,25 @@ Playa.artist = function(req, res) {
       rows.push(row);
     }
     res.render('artist', {title: artist_name, artist_name: artist_name, rows: rows, active: 'artist'});
+  });
+}
+
+Playa.albums = function(req, res) {
+  log.info('GET /albums is currently horribly inefficient. Endless scrolling perhaps?');
+  database.getAlbums(function(err, albums) {
+    var rows = [];
+    // Split array into rows of 5
+    // Also deal with users having less than 15 albums
+    while(albums.length != 0) {
+      var x = 0;
+      var row = [];
+      while(albums.length != 0 && x < 5) {
+        row.push(albums.shift());
+        x++;
+      }
+      rows.push(row);
+    }
+    res.render('albums', { title: 'Playa', rows: rows, active: 'albums'});
   });
 }
 
