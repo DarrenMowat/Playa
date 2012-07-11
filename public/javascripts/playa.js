@@ -10,7 +10,13 @@ var notifyNowPlaying = false;
 socket.on('status', function (stat) {
     status = stat;
     console.log(status);
-    // Toggle pause / play button
+    $("#playPauseButton").empty();
+    if(status == 'playing') {
+        $("#playPauseButton").append('<a href="#" onclick="return playerPause()">Pause</a>');
+    } else {
+        $("#playPauseButton").append('<a href="#" onclick="return playerPlay()">Play</a>');
+    }
+
 
 });
 

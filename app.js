@@ -78,6 +78,8 @@ app.post('/player/incVolume', playa.incVolume);
 
 app.post('/player/decVolume', playa.decVolume);
 
+app.get('/volume', playa.volume);
+
 // Lets start the express server & socket.io server
 server.listen(port);
 var io_server = io.listen(server);

@@ -213,10 +213,14 @@ Playa.stop = function(req, res){
     res.send(500);
 };
 
+Playa.volume = function(req, res) {
+          res.render('volume', {title: 'Volume', active: 'volume'});
+};
+
 Playa.getVolume = function(req, res) {
     if(mplayer.isRunning()) {
-      mplayer.getVolume();
-      res.send(200);
+      var volume = mplayer.getVolume();
+      res.json({volume: volume});
       return;
     }
     // Can't pause music - MPlayer isn't running!
@@ -401,6 +405,10 @@ mplayer.getEventEmitter(function(eventEmitter) {
         setNowPlaying(undefined);
         setIsPlaying(false);
       }
+  });
+  eventEmitter.on('playing', function(playing) {
+    status = playing ? 'playing' : 'paused';
+    io.sockets.emit('status', status);
   });
 });
 

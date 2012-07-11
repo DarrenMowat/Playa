@@ -82,7 +82,11 @@ MPlayer.isPaused = function() {
 	return paused;
 }
 
-MPlayer.getVolume = function() {
+MPlayer.getStoredVolume = function() {
+	return volume;
+}
+
+MPlayer.askVolume = function() {
 	if(mplayer != undefined) {
 		mplayer.stdin.write("get_property volume\n");
 	}
@@ -92,7 +96,7 @@ MPlayer.incVolume = function() {
 	if(mplayer != undefined) {
 		var newVol = (volume + 5) > 100 ? 100 : (volume + 5);
 		mplayer.stdin.write("set_property volume " + newVol + " 1");
-		setTimeout(MPlayer.getVolume, 1000);
+		setTimeout(MPlayer.askVolume, 1000);
 	}
 }
 
@@ -100,7 +104,7 @@ MPlayer.decVolume = function() {
 	if(mplayer != undefined) {
 		var newVol = (volume - 5) > 100 ? 100 : (volume - 5);
 		mplayer.stdin.write("set_property volume " + newVol + " 1");
-		setTimeout(MPlayer.getVolume, 1000);
+		setTimeout(MPlayer.askVolume, 1000);
 	}
 }
 
