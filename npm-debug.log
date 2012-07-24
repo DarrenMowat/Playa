@@ -1,0 +1,120 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'nodejs', '/usr/bin/npm', 'install', '-d' ]
+2 info using npm@1.1.44
+3 info using node@v0.8.3
+4 verbose config file /home/darren/.npmrc
+5 verbose config file /usr/etc/npmrc
+6 verbose config file /usr/lib/nodejs/npm/npmrc
+7 verbose read json /home/darren/Playa/package.json
+8 verbose readDependencies using package.json deps
+9 verbose install where, deps [ '/home/darren/Playa',
+9 verbose install   [ 'express',
+9 verbose install     'jade',
+9 verbose install     'musicmetadata',
+9 verbose install     'sqlite3',
+9 verbose install     'progress',
+9 verbose install     'socket.io',
+9 verbose install     'string',
+9 verbose install     'lastfm' ] ]
+10 verbose from cache /home/darren/Playa/package.json
+11 info preinstall Playa@0.0.1
+12 verbose read json /home/darren/Playa/node_modules/debug/package.json
+13 verbose read json /home/darren/Playa/node_modules/express/package.json
+14 verbose read json /home/darren/Playa/node_modules/youtube-dl/package.json
+15 verbose read json /home/darren/Playa/node_modules/jade/package.json
+16 verbose read json /home/darren/Playa/node_modules/gzippo/package.json
+17 verbose read json /home/darren/Playa/node_modules/socket.io/package.json
+18 verbose read json /home/darren/Playa/node_modules/progress/package.json
+19 verbose read json /home/darren/Playa/node_modules/sqlite3/package.json
+20 verbose read json /home/darren/Playa/node_modules/lastfm/package.json
+21 verbose read json /home/darren/Playa/node_modules/musicmetadata/package.json
+22 verbose read json /home/darren/Playa/node_modules/connect/package.json
+23 verbose read json /home/darren/Playa/node_modules/string/package.json
+24 verbose read json /home/darren/Playa/node_modules/express-cachebuster/package.json
+25 warn package.json jade@0.26.3 No README.md file found!
+26 warn package.json connect@2.3.6 No README.md file found!
+27 verbose from cache /home/darren/Playa/package.json
+28 verbose readDependencies using package.json deps
+29 verbose from cache /home/darren/Playa/node_modules/debug/package.json
+30 verbose from cache /home/darren/Playa/node_modules/express/package.json
+31 verbose from cache /home/darren/Playa/node_modules/youtube-dl/package.json
+32 verbose from cache /home/darren/Playa/node_modules/jade/package.json
+33 verbose read json /home/darren/Playa/node_modules/.bin/package.json
+34 verbose from cache /home/darren/Playa/node_modules/gzippo/package.json
+35 verbose from cache /home/darren/Playa/node_modules/socket.io/package.json
+36 verbose from cache /home/darren/Playa/node_modules/progress/package.json
+37 verbose from cache /home/darren/Playa/node_modules/sqlite3/package.json
+38 verbose from cache /home/darren/Playa/node_modules/lastfm/package.json
+39 verbose from cache /home/darren/Playa/node_modules/musicmetadata/package.json
+40 verbose from cache /home/darren/Playa/node_modules/connect/package.json
+41 verbose from cache /home/darren/Playa/node_modules/string/package.json
+42 verbose from cache /home/darren/Playa/node_modules/express-cachebuster/package.json
+43 verbose already installed skipping sqlite3@>=2.1.3 /home/darren/Playa
+44 verbose already installed skipping progress@0.0.4 /home/darren/Playa
+45 verbose already installed skipping socket.io@>=0.9.6 /home/darren/Playa
+46 verbose already installed skipping string@>=0.2.1-2 /home/darren/Playa
+47 verbose already installed skipping lastfm@0.8.1 /home/darren/Playa
+48 verbose already installed skipping express@>=3.0.0beta4 /home/darren/Playa
+49 verbose already installed skipping jade@>= 0.0.1 /home/darren/Playa
+50 verbose already installed skipping musicmetadata@>=0.1.6 /home/darren/Playa
+51 silly resolved []
+52 info build /home/darren/Playa
+53 verbose from cache /home/darren/Playa/package.json
+54 verbose linkStuff [ false, false, false, '/home/darren' ]
+55 info linkStuff Playa@0.0.1
+56 verbose linkBins Playa@0.0.1
+57 verbose linkMans Playa@0.0.1
+58 verbose rebuildBundles Playa@0.0.1
+59 verbose rebuildBundles [ 'debug',
+59 verbose rebuildBundles   'express',
+59 verbose rebuildBundles   'youtube-dl',
+59 verbose rebuildBundles   'jade',
+59 verbose rebuildBundles   '.bin',
+59 verbose rebuildBundles   'gzippo',
+59 verbose rebuildBundles   'socket.io',
+59 verbose rebuildBundles   'progress',
+59 verbose rebuildBundles   'sqlite3',
+59 verbose rebuildBundles   'lastfm',
+59 verbose rebuildBundles   'musicmetadata',
+59 verbose rebuildBundles   'connect',
+59 verbose rebuildBundles   'string',
+59 verbose rebuildBundles   'express-cachebuster' ]
+60 verbose rebuild bundle /home/darren/Playa/node_modules/debug
+61 info build /home/darren/Playa/node_modules/debug
+62 verbose from cache /home/darren/Playa/node_modules/debug/package.json
+63 info preinstall debug@0.7.0
+64 verbose linkStuff [ false, false, false, '/home/darren/Playa/node_modules' ]
+65 info linkStuff debug@0.7.0
+66 verbose linkBins debug@0.7.0
+67 verbose linkMans debug@0.7.0
+68 verbose rebuildBundles debug@0.7.0
+69 info install debug@0.7.0
+70 info postinstall debug@0.7.0
+71 verbose rebuild bundle /home/darren/Playa/node_modules/youtube-dl
+72 info build /home/darren/Playa/node_modules/youtube-dl
+73 verbose from cache /home/darren/Playa/node_modules/youtube-dl/package.json
+74 info preinstall youtube-dl@1.2.4
+75 verbose linkStuff [ false, false, false, '/home/darren/Playa/node_modules' ]
+76 info linkStuff youtube-dl@1.2.4
+77 verbose linkBins youtube-dl@1.2.4
+78 verbose link bins [ { 'youtube-dl': './bin/youtube-dl' },
+78 verbose link bins   '/home/darren/Playa/node_modules/.bin',
+78 verbose link bins   false ]
+79 verbose linkMans youtube-dl@1.2.4
+80 verbose rebuildBundles youtube-dl@1.2.4
+81 error Error: EACCES, unlink '/home/darren/Playa/node_modules/.bin/youtube-dl'
+81 error  { [Error: EACCES, unlink '/home/darren/Playa/node_modules/.bin/youtube-dl']
+81 error   errno: 3,
+81 error   code: 'EACCES',
+81 error   path: '/home/darren/Playa/node_modules/.bin/youtube-dl' }
+82 error Please try running this command again as root/Administrator.
+83 error System Linux 3.2.0-26-generic-pae
+84 error command "nodejs" "/usr/bin/npm" "install" "-d"
+85 error cwd /home/darren/Playa
+86 error node -v v0.8.3
+87 error npm -v 1.1.44
+88 error path /home/darren/Playa/node_modules/.bin/youtube-dl
+89 error code EACCES
+90 error errno 3
+91 error stack Error: EACCES, unlink '/home/darren/Playa/node_modules/.bin/youtube-dl'
+92 verbose exit [ 3, true ]
