@@ -32,6 +32,8 @@ Playa has to scan all your music and add it to its database. Do this using
 
     node setup '/path/to/your/music/folder'
 
+If your running on a RaspberryPi this will take a while. Go grab a coffee...
+
 ### Add Artwork 
 
 If you want to have artwork displayed on the web interface run 
@@ -47,6 +49,8 @@ At this point, you should be ready to go:
     sudo NODE_ENV=production node app 80
 
 That'll start the server up on [localhost](http://localhost/) or what ever IP Address your server is running on.
+
+You could run Playa behind a Nginx and proxy requests to it but I felt this was overkill for my install.
 
 ## Technical Details
 
