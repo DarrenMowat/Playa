@@ -50,7 +50,7 @@ At this point, you should be ready to go:
 
 That'll start the server up on [localhost](http://localhost/) or what ever IP Address your server is running on.
 
-You could run Playa behind a Nginx and proxy requests to it but I felt this was overkill for my install.
+You could run Playa behind Nginx and proxy requests to it but I felt this was overkill for my install.
 
 ## Technical Details
 
