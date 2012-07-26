@@ -59,6 +59,10 @@ Last.fm is used to get artwork.
 
 Playa doesn't have any tests yet. They're on my to do list.
 
+## WIP
+
+Playa is still a work in progress. If you find any bugs please file an issue or contribute some code :)
+
 ## Contributing
 
 I'd love to see your contributions to Playa. Playa can be run in development mode with:
@@ -66,7 +70,6 @@ I'd love to see your contributions to Playa. Playa can be run in development mod
     node app
 
 You can hit the server on [localhost:3000](http://localhost:3000). Jade files are automatically reloaded. Node.js code is not though.
-
 
 ## About Me
 
