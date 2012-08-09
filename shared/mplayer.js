@@ -15,8 +15,6 @@ var forcefullyStopped = false;
 
 var volume = 80;
 
-// TODO: Volume Bug Bitch when changing songs
-
 MPlayer.play = function(song) {
 	if(song == undefined) return;
 	// Tidy the song up
